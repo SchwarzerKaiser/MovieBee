@@ -1,5 +1,6 @@
 package com.leewilson.movienights.ui.auth
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Html
 import android.view.LayoutInflater
@@ -7,10 +8,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.leewilson.movienights.R
 import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginFragment : Fragment() {
+
+    private lateinit var auth: FirebaseAuth
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,6 +35,8 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         auth_register_text_link.setText(Html.fromHtml(getString(R.string.register_account_string)))
+
+        auth = Firebase.auth
 
         initListeners()
     }
