@@ -3,6 +3,7 @@ package com.leewilson.movienights.ui.auth
 import android.content.Context
 import android.os.Bundle
 import android.text.Html
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,11 +17,13 @@ import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginFragment : Fragment() {
 
+    private val TAG = "LoginFragment"
+
     private lateinit var auth: FirebaseAuth
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-
+        // Inject dependencies here
     }
 
     override fun onCreateView(
@@ -33,10 +36,7 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         auth_register_text_link.setText(Html.fromHtml(getString(R.string.register_account_string)))
-
-        auth = Firebase.auth
 
         initListeners()
     }
