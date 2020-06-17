@@ -20,12 +20,13 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/krona_one"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/biryani_semibold"
         android:text="Movie Nights"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="#9A0034"
         android:textSize="35sp"
         android:typeface="normal"
-        android:textColor="@color/colorTextBlack"
         app:layout_constraintEnd_toEndOf="@id/login_screen_logo"
         app:layout_constraintStart_toStartOf="@id/login_screen_logo"
         app:layout_constraintTop_toBottomOf="@id/login_screen_logo" />
@@ -46,6 +47,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/auth_email_field"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="E-mail"
@@ -68,6 +70,7 @@
         app:layout_constraintTop_toTopOf="@id/auth_email_input">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/auth_password_field"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Password"

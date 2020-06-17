@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.leewilson.movienights.repository.auth.AuthRepository
 import java.lang.IllegalArgumentException
 import javax.inject.Inject
+import javax.inject.Singleton
 
 class AuthViewModelProviderFactory @Inject constructor(
     private val repository: AuthRepository

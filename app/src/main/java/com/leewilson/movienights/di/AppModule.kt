@@ -1,19 +1,21 @@
 package com.leewilson.movienights.di
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.leewilson.movienights.BaseApplication
 import com.leewilson.movienights.persistence.AppDatabase
 import com.leewilson.movienights.persistence.AppDatabase.Companion.DATABASE_NAME
 import com.leewilson.movienights.persistence.UserPropertiesDao
+import com.leewilson.movienights.util.Constants
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-object AppModule {
+class AppModule {
 
-    @JvmStatic
     @Singleton
     @Provides
     fun provideAppDatabase(application: BaseApplication): AppDatabase {
@@ -24,10 +26,21 @@ object AppModule {
         ).build()
     }
 
-    @JvmStatic
     @Singleton
     @Provides
     fun provideUserPropertiesDao(db: AppDatabase): UserPropertiesDao {
         return db.getUserPropertiesDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideSharedPreferences(application: BaseApplication): SharedPreferences {
+        return application.getSharedPreferences(Constants.APP_PREFERENCES, Context.MODE_PRIVATE)
+    }
+
+    @Singleton
+    @Provides
+    fun provideSharedPreferencesEditor(sharedPreferences: SharedPreferences): SharedPreferences.Editor {
+        return sharedPreferences.edit()
     }
 }
