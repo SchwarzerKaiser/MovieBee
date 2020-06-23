@@ -8,6 +8,7 @@ class Constants {
         const val INCORRECT_PASSWORD = "Your password/email is incorrect. Please try again."
         const val MISSING_FIELDS = "Please enter all fields."
         const val MISSING_USER = "User not found. Please register."
+        const val PASSWORDS_DO_NOT_MATCH = "Passwords do not match."
 
         // Shared Preference files:
         const val APP_PREFERENCES: String = "com.leewilson.movienights.APP_PREFERENCES"

@@ -2,9 +2,7 @@ package com.leewilson.movienights.repository.auth
 
 import android.content.SharedPreferences
 import android.util.Log
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.google.firebase.auth.*
 import com.leewilson.movienights.persistence.UserPropertiesDao
 import com.leewilson.movienights.ui.auth.state.AuthViewState
 import com.leewilson.movienights.util.AbsentLiveData
@@ -24,9 +22,11 @@ class AuthRepository @Inject constructor(
     private val TAG = "AuthRepository"
 
     suspend fun loginUserIfExisting(): DataState<AuthViewState> {
+
         val email = sharedPreferences.getString(Constants.PREVIOUS_AUTH_USER, null)
             // User not in SharedPref, so return null (will not be reacted to)
             ?: return DataState.data<AuthViewState>(null)
+
         val userProperties = authDao.searchByEmail(email)
             // This shouldn't ever happen, unless there's some database config error
             ?: return DataState.error<AuthViewState>("Database error! Please reinstall.")
@@ -63,6 +63,48 @@ class AuthRepository @Inject constructor(
             Log.e(TAG, "loginUserIfExisting: FirebaseAuthInvalidCredentialsException: ", e)
             return DataState.error<AuthViewState>(
                 Constants.INCORRECT_PASSWORD
+            )
+        }
+    }
+
+    suspend fun register(
+        email: String?,
+        password: String?,
+        confirmPassword: String?
+    ): DataState<AuthViewState> {
+
+        if (email.isNullOrBlank() ||
+            password.isNullOrBlank() ||
+            confirmPassword.isNullOrBlank()) {
+            return DataState.error(
+                Constants.MISSING_FIELDS
+            )
+        }
+
+        if (password != confirmPassword) {
+            return DataState.error(
+                Constants.PASSWORDS_DO_NOT_MATCH
+            )
+        }
+
+        try {
+            val authResult = firebaseAuth
+                .createUserWithEmailAndPassword(email, password)
+                .await()
+
+            return DataState.data(
+                null,
+                AuthViewState(
+                    authResult.user?.uid
+                )
+            )
+        } catch (e: FirebaseAuthWeakPasswordException) {
+            return DataState.error(
+                e.reason.toString()
+            )
+        } catch (e: FirebaseAuthUserCollisionException) {
+            return DataState.error(
+                e.message.toString()
             )
         }
     }

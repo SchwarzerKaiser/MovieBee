@@ -40,11 +40,24 @@ class AuthViewModel(
                         stateEvent.password
                     )
                     emit(result)
+                    result.data?.peekContent()?.uid?.let {
+
+                    }
+                }
+            }
+
+            is RegisterEvent -> {
+                return liveData {
+                    emit(DataState.loading(isLoading = true))
+                    val result = repository.register(
+                        stateEvent.email,
+                        stateEvent.password,
+                        stateEvent.confirmPassword
+                    )
+                    emit(result)
                 }
             }
         }
-
-        return AbsentLiveData.create()
     }
 
     fun setStateEvent(event: AuthStateEvent) {
