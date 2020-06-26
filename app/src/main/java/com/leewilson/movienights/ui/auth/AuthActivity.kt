@@ -2,42 +2,30 @@ package com.leewilson.movienights.ui.auth
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
-import com.leewilson.movienights.BaseApplication
 import com.leewilson.movienights.R
-import com.leewilson.movienights.di.auth.AuthComponent
 import com.leewilson.movienights.ui.auth.state.AuthStateEvent
 import com.leewilson.movienights.ui.main.MainActivity
 import com.leewilson.movienights.util.Constants.Companion.UID_STRING_EXTRA
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_auth.*
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class AuthActivity : AppCompatActivity() {
 
     private val TAG = "AuthActivity"
 
-    @Inject
-    lateinit var authViewModelProviderFactory: AuthViewModelProviderFactory
-    lateinit var authComponent: AuthComponent
-    private lateinit var viewModel: AuthViewModel
+    private val viewModel: AuthViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_auth)
-
-        authComponent = (applicationContext as BaseApplication)
-            .appComponent
-            .authComponent()
-            .create()
-        authComponent.inject(this)
-
-        viewModel = ViewModelProvider(this, authViewModelProviderFactory)
-            .get(AuthViewModel::class.java)
 
         subscribeObservers()
         attemptLogin()
@@ -73,6 +61,7 @@ class AuthActivity : AppCompatActivity() {
         val intent = Intent(this, MainActivity::class.java)
         intent.putExtra(UID_STRING_EXTRA, uid)
         startActivity(intent)
+        finish()
     }
 
     private fun showProgressBar(isVisible: Boolean) {

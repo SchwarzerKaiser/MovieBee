@@ -1,5 +1,6 @@
 package com.leewilson.movienights.ui.auth
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.leewilson.movienights.repository.auth.AuthRepository
 import com.leewilson.movienights.ui.auth.state.AuthStateEvent
@@ -10,7 +11,7 @@ import com.leewilson.movienights.util.DataState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 
-class AuthViewModel(
+class AuthViewModel @ViewModelInject constructor(
     val repository: AuthRepository
 ) : ViewModel() {
 
@@ -27,6 +28,7 @@ class AuthViewModel(
         when (stateEvent) {
             is ExistingUserLoginEvent -> {
                 return liveData(Dispatchers.IO) {
+                    emit(DataState.loading<AuthViewState>(isLoading = true))
                     val result = repository.loginUserIfExisting()
                     emit(result)
                 }
@@ -40,16 +42,14 @@ class AuthViewModel(
                         stateEvent.password
                     )
                     emit(result)
-                    result.data?.peekContent()?.uid?.let {
-
-                    }
                 }
             }
 
             is RegisterEvent -> {
-                return liveData {
+                return liveData(Dispatchers.IO) {
                     emit(DataState.loading(isLoading = true))
                     val result = repository.register(
+                        stateEvent.name,
                         stateEvent.email,
                         stateEvent.password,
                         stateEvent.confirmPassword

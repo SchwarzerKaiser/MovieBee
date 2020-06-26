@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
@@ -17,6 +19,7 @@ import com.google.firebase.ktx.Firebase
 import com.leewilson.movienights.BaseApplication
 import com.leewilson.movienights.R
 import com.leewilson.movienights.ui.auth.state.AuthStateEvent
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_login.*
 import javax.inject.Inject
 
@@ -24,16 +27,7 @@ class LoginFragment : Fragment() {
 
     private val TAG = "LoginFragment"
 
-    @Inject
-    lateinit var providerFactory: AuthViewModelProviderFactory
-
     private lateinit var viewModel: AuthViewModel
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        (activity as AuthActivity).authComponent
-            .inject(this)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,23 +41,16 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         auth_register_text_link.setText(Html.fromHtml(getString(R.string.register_account_string)))
 
-        initViewModel()
+        activity?.run {
+            viewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
+        }
+
         initListeners()
-        subscribeObservers()
         attemptLoginWithExistingUser()
     }
 
     private fun attemptLoginWithExistingUser() {
         viewModel.setStateEvent(AuthStateEvent.ExistingUserLoginEvent)
-    }
-
-    private fun subscribeObservers() {
-        // subscribe to LiveData
-    }
-
-    private fun initViewModel() {
-        viewModel = ViewModelProvider(requireActivity().viewModelStore, providerFactory)
-            .get(AuthViewModel::class.java)
     }
 
     private fun initListeners() {

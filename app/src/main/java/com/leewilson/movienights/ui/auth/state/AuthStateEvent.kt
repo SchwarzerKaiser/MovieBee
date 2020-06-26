@@ -10,6 +10,7 @@ sealed class AuthStateEvent {
     ) : AuthStateEvent()
 
     class RegisterEvent(
+        val name: String? = null,
         val email: String? = null,
         val password: String? = null,
         val confirmPassword: String? = null

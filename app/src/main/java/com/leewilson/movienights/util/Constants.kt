@@ -18,5 +18,8 @@ class Constants {
 
         // uid string extra
         const val UID_STRING_EXTRA = "com.leewilson.movienights.UID_STRING_EXTRA"
+
+        // Firebase RTDB URL
+        const val FIREBASE_RTDB_URL = "https://movienights-70182.firebaseio.com/"
     }
 }

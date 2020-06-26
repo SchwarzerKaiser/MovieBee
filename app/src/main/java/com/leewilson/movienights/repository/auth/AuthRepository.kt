@@ -3,17 +3,19 @@ package com.leewilson.movienights.repository.auth
 import android.content.SharedPreferences
 import android.util.Log
 import com.google.firebase.auth.*
+import com.google.firebase.database.DatabaseReference
+import com.leewilson.movienights.model.UserProperties
 import com.leewilson.movienights.persistence.UserPropertiesDao
+import com.leewilson.movienights.repository.User
 import com.leewilson.movienights.ui.auth.state.AuthViewState
-import com.leewilson.movienights.util.AbsentLiveData
 import com.leewilson.movienights.util.Constants
 import com.leewilson.movienights.util.DataState
-import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class AuthRepository @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
+    private val firebaseDbRef: DatabaseReference,
     private val authDao: UserPropertiesDao,
     private val sharedPreferences: SharedPreferences,
     private val sharedPreferencesEditor: SharedPreferences.Editor
@@ -49,6 +51,8 @@ class AuthRepository @Inject constructor(
                 .signInWithEmailAndPassword(email, password)
                 .await()
 
+            storeUserLocally(authResult.user!!, password)
+
             return DataState.data<AuthViewState>(
                 data = AuthViewState(
                     authResult.user?.uid
@@ -68,44 +72,63 @@ class AuthRepository @Inject constructor(
     }
 
     suspend fun register(
-        email: String?,
-        password: String?,
-        confirmPassword: String?
+        name: String?, email: String?,
+        password: String?, confirmPassword: String?
     ): DataState<AuthViewState> {
 
-        if (email.isNullOrBlank() ||
+        if (name.isNullOrBlank() ||
+            email.isNullOrBlank() ||
             password.isNullOrBlank() ||
-            confirmPassword.isNullOrBlank()) {
-            return DataState.error(
-                Constants.MISSING_FIELDS
-            )
-        }
+            confirmPassword.isNullOrBlank())
+            return DataState.error(Constants.MISSING_FIELDS)
 
-        if (password != confirmPassword) {
-            return DataState.error(
-                Constants.PASSWORDS_DO_NOT_MATCH
-            )
-        }
+        if (password != confirmPassword)
+            return DataState.error(Constants.PASSWORDS_DO_NOT_MATCH)
 
         try {
             val authResult = firebaseAuth
                 .createUserWithEmailAndPassword(email, password)
                 .await()
 
-            return DataState.data(
-                null,
-                AuthViewState(
-                    authResult.user?.uid
+            authResult.user?.let { user ->
+                storeUserLocally(user, password)
+                createDbUser(name, user)
+                return@register DataState.data(
+                    null,
+                    AuthViewState(user.uid)
+                )
+            }
+        } catch (e: FirebaseAuthWeakPasswordException) {
+            return DataState.error(e.reason.toString())
+        } catch (e: FirebaseAuthUserCollisionException) {
+            return DataState.error(e.message.toString())
+        }
+
+        // user is null. unknown error
+        return DataState.error("Something went wrong.")
+    }
+
+    private fun createDbUser(name: String, user: FirebaseUser) {
+        firebaseDbRef
+            .child("users")
+            .child(user.uid)
+            .setValue(
+                User(
+                    name = name,
+                    uid = user.uid
                 )
             )
-        } catch (e: FirebaseAuthWeakPasswordException) {
-            return DataState.error(
-                e.reason.toString()
+    }
+
+    private fun storeUserLocally(user: FirebaseUser, password: String) {
+        sharedPreferencesEditor.putString(Constants.PREVIOUS_AUTH_USER, user.email)
+        sharedPreferencesEditor.apply()
+        authDao.insertAndReplace(
+            UserProperties(
+                0,
+                user.email!!,
+                password
             )
-        } catch (e: FirebaseAuthUserCollisionException) {
-            return DataState.error(
-                e.message.toString()
-            )
-        }
+        )
     }
 }
