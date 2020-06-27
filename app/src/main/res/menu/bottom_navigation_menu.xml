@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/bottom_nav_menu_feed"
+        android:icon="@drawable/btmnav_ic_feed"
+        android:title="Feed" />
+
+    <item
+        android:id="@+id/bottom_nav_menu_new"
+        android:icon="@drawable/btmnav_ic_new"
+        android:title="New" />
+
+    <item
+        android:id="@+id/bottom_nav_menu_calendar"
+        android:icon="@drawable/btmnav_ic_calendar"
+        android:title="Calendar" />
+
+    <item
+        android:id="@+id/bottom_nav_menu_profile"
+        android:icon="@drawable/btmnav_ic_profile"
+        android:title="Profile" />
+</menu>

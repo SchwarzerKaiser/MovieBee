@@ -7,7 +7,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class MainViewModel @ViewModelInject constructor(
-    val repository: MainRepository
+    private val repository: MainRepository
 ): ViewModel() {
 
     fun logout() {
