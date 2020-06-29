@@ -2,7 +2,7 @@ package com.leewilson.movienights.util
 
 class Constants {
 
-    companion object{
+    companion object {
 
         // Error messages
         const val INCORRECT_PASSWORD = "Your password/email is incorrect. Please try again."
