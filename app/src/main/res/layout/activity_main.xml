@@ -7,9 +7,20 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.MainActivity">
 
+    <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+        style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"
+        android:indeterminateTint="@color/colorAccent"
+        android:visibility="invisible"
+        app:mpb_progressStyle="horizontal"
+        android:indeterminate="true"
+        android:id="@+id/mainProgressBar"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/mainFragmentContainer"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/mainProgressBar"
         app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
         android:layout_width="match_parent"
         android:layout_height="0dp"/>

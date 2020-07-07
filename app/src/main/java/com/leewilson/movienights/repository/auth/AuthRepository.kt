@@ -2,11 +2,12 @@ package com.leewilson.movienights.repository.auth
 
 import android.content.SharedPreferences
 import android.util.Log
+import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.*
-import com.google.firebase.database.DatabaseReference
+import com.google.firebase.firestore.FirebaseFirestore
 import com.leewilson.movienights.model.UserProperties
 import com.leewilson.movienights.persistence.UserPropertiesDao
-import com.leewilson.movienights.repository.User
+import com.leewilson.movienights.model.User
 import com.leewilson.movienights.ui.auth.state.AuthViewState
 import com.leewilson.movienights.util.Constants
 import com.leewilson.movienights.util.DataState
@@ -15,7 +16,7 @@ import javax.inject.Inject
 
 class AuthRepository @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
-    private val firebaseDbRef: DatabaseReference,
+    private val firebaseDbRef: FirebaseFirestore,
     private val authDao: UserPropertiesDao,
     private val sharedPreferences: SharedPreferences,
     private val sharedPreferencesEditor: SharedPreferences.Editor
@@ -26,18 +27,18 @@ class AuthRepository @Inject constructor(
     suspend fun loginUserIfExisting(): DataState<AuthViewState> {
 
         val email = sharedPreferences.getString(Constants.PREVIOUS_AUTH_USER, null)
-            // User not in SharedPref, so return null (will not be reacted to)
+        // User not in SharedPref, so return null (will not be reacted to)
             ?: return DataState.data<AuthViewState>(null)
 
         val userProperties = authDao.searchByEmail(email)
-            // This shouldn't ever happen, unless there's some database config error
+        // This shouldn't ever happen, unless there's some database config error
             ?: return DataState.error<AuthViewState>("Database error! Please reinstall.")
 
         return login(email, userProperties.password)
     }
 
     suspend fun loginWithCredentials(email: String?, password: String?): DataState<AuthViewState> {
-        if(email.isNullOrBlank() || password.isNullOrBlank()) {
+        if (email.isNullOrBlank() || password.isNullOrBlank()) {
             return DataState.error<AuthViewState>(
                 Constants.MISSING_FIELDS
             )
@@ -53,20 +54,25 @@ class AuthRepository @Inject constructor(
 
             storeUserLocally(authResult.user!!, password)
 
-            return DataState.data<AuthViewState>(
+            return DataState.data(
                 data = AuthViewState(
                     authResult.user?.uid
                 )
             )
         } catch (e: FirebaseAuthInvalidUserException) {
-            Log.e(TAG, "loginUserIfExisting: FirebaseAuthInvalidUserException: ", e)
-            return DataState.error<AuthViewState>(
+            Log.e(TAG, "login: FirebaseAuthInvalidUserException: ", e)
+            return DataState.error(
                 Constants.MISSING_USER
             )
         } catch (e: FirebaseAuthInvalidCredentialsException) {
-            Log.e(TAG, "loginUserIfExisting: FirebaseAuthInvalidCredentialsException: ", e)
-            return DataState.error<AuthViewState>(
+            Log.e(TAG, "login: FirebaseAuthInvalidCredentialsException: ", e)
+            return DataState.error(
                 Constants.INCORRECT_PASSWORD
+            )
+        } catch (e: FirebaseNetworkException) {
+            Log.e(TAG, "login: FirebaseNetworkException", e)
+            return DataState.error(
+                Constants.NO_INTERNET
             )
         }
     }
@@ -79,7 +85,8 @@ class AuthRepository @Inject constructor(
         if (name.isNullOrBlank() ||
             email.isNullOrBlank() ||
             password.isNullOrBlank() ||
-            confirmPassword.isNullOrBlank())
+            confirmPassword.isNullOrBlank()
+        )
             return DataState.error(Constants.MISSING_FIELDS)
 
         if (password != confirmPassword)
@@ -109,19 +116,14 @@ class AuthRepository @Inject constructor(
     }
 
     private fun createDbUser(name: String, user: FirebaseUser) {
-        firebaseDbRef
-            .child("users")
-            .child(user.uid)
-            .setValue(
-                User(
-                    name = name,
-                    uid = user.uid
-                )
-            )
+        firebaseDbRef.collection("users")
+            .document(user.uid)
+            .set(User(user.uid, name))
     }
 
     private fun storeUserLocally(user: FirebaseUser, password: String) {
         sharedPreferencesEditor.putString(Constants.PREVIOUS_AUTH_USER, user.email)
+        sharedPreferencesEditor.putString(Constants.CURRENT_USER_UID, user.uid)
         sharedPreferencesEditor.apply()
         authDao.insertAndReplace(
             UserProperties(

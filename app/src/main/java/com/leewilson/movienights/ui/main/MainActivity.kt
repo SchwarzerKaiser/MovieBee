@@ -1,17 +1,14 @@
 package com.leewilson.movienights.ui.main
 
-import android.content.Intent
-import com.leewilson.movienights.util.BottomNavController
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.leewilson.movienights.R
-import com.leewilson.movienights.ui.auth.AuthActivity
 import com.leewilson.movienights.ui.main.feed.FeedItemDetailFragment
 import com.leewilson.movienights.ui.main.newpost.CreateMovieNightFragment
+import com.leewilson.movienights.util.BottomNavController
 import com.leewilson.movienights.util.setUpNavigation
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,10 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity(),
     BottomNavController.NavGraphProvider,
     BottomNavController.OnNavigationGraphChanged,
-    BottomNavController.OnNavigationReselectedListener
-{
-
-    private val viewModel by viewModels<MainViewModel>()
+    BottomNavController.OnNavigationReselectedListener {
 
     private lateinit var bottomNavigationView: BottomNavigationView
 
@@ -45,7 +39,7 @@ class MainActivity : AppCompatActivity(),
         bottomNavController.onNavigationItemSelected()
     }
 
-    override fun getNavGraphId(itemId: Int): Int = when(itemId) {
+    override fun getNavGraphId(itemId: Int): Int = when (itemId) {
         R.id.bottom_nav_menu_feed -> R.navigation.feed_nav_graph
         R.id.bottom_nav_menu_new -> R.navigation.newitem_nav_graph
         R.id.bottom_nav_menu_calendar -> R.navigation.calendar_nav_graph
@@ -59,24 +53,18 @@ class MainActivity : AppCompatActivity(),
 
     override fun onBackPressed() = bottomNavController.onBackPressed()
 
-    override fun onReselectNavItem(navController: NavController, fragment: Fragment) = when(fragment) {
-        is FeedItemDetailFragment -> {
-            navController.navigate(R.id.action_feedItemDetailFragment_to_feedFragment)
-        }
+    override fun onReselectNavItem(navController: NavController, fragment: Fragment) =
+        when (fragment) {
+            is FeedItemDetailFragment -> {
+                navController.navigate(R.id.action_feedItemDetailFragment_to_feedFragment)
+            }
 
-        is CreateMovieNightFragment -> {
-            navController.navigate(R.id.action_createMovieNightFragment_to_searchMovieFragment)
-        }
+            is CreateMovieNightFragment -> {
+                navController.navigate(R.id.action_createMovieNightFragment_to_searchMovieFragment)
+            }
 
-        else -> {
-            // Do nothing.
+            else -> {
+                // Do nothing.
+            }
         }
-    }
-
-    fun logout() {
-        viewModel.logout()
-        val intent = Intent(this, AuthActivity::class.java)
-        startActivity(intent)
-        finish()
-    }
 }

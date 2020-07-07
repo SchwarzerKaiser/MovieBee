@@ -19,8 +19,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class AuthActivity : AppCompatActivity() {
 
-    private val TAG = "AuthActivity"
-
     private val viewModel: AuthViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {

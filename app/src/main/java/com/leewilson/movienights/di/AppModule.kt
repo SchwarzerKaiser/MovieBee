@@ -3,13 +3,13 @@ package com.leewilson.movienights.di
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.room.Room
-import androidx.room.RoomDatabase
+import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.leewilson.movienights.BaseApplication
 import com.leewilson.movienights.persistence.AppDatabase
 import com.leewilson.movienights.persistence.AppDatabase.Companion.DATABASE_NAME
 import com.leewilson.movienights.persistence.UserPropertiesDao
@@ -27,10 +27,16 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideFirebaseDatabaseReference(): DatabaseReference {
-        return FirebaseDatabase.getInstance(
-            Constants.FIREBASE_RTDB_URL
-        ).reference
+    fun provideGlideRequestManager(
+        @ApplicationContext context: Context
+    ): RequestManager {
+        return Glide.with(context)
+    }
+
+    @Singleton
+    @Provides
+    fun provideFirebaseDatabaseReference(): FirebaseFirestore {
+        return Firebase.firestore
     }
 
     @Singleton
