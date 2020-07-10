@@ -11,6 +11,7 @@ import com.leewilson.movienights.ui.main.newpost.CreateMovieNightFragment
 import com.leewilson.movienights.util.BottomNavController
 import com.leewilson.movienights.util.setUpNavigation
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.activity_main.*
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(),
@@ -33,6 +34,8 @@ class MainActivity : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        setSupportActionBar(mainToolbar)
 
         bottomNavigationView = findViewById(R.id.bottomNavigation)
         bottomNavigationView.setUpNavigation(bottomNavController, this)

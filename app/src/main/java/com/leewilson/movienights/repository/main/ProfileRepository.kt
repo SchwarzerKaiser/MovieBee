@@ -2,6 +2,7 @@ package com.leewilson.movienights.repository.main
 
 import android.content.SharedPreferences
 import android.util.Log
+import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.firestore.FirebaseFirestore
 import com.leewilson.movienights.persistence.UserPropertiesDao
 import com.leewilson.movienights.ui.main.profile.state.ProfileViewState
@@ -21,22 +22,18 @@ class ProfileRepository @Inject constructor(
     private val userDao: UserPropertiesDao
 ) {
 
-    private val TAG = "ProfileRepository"
-
     suspend fun getUserData(): DataState<ProfileViewState> {
         val collectionRef = firebaseFirestore.collection("users")
         val uid = sharedPreferences.getString(Constants.CURRENT_USER_UID, "")
-        try {
+        return try {
             val viewState = collectionRef
                 .document(uid!!)
                 .get()
                 .await()
                 .toObject(ProfileViewState::class.java)
-            Log.d(TAG, "UserData: $viewState")
-            return DataState.data(null, viewState)
-        } catch (e: Exception) {
-            Log.e(TAG, "getUserData", e)
-            return DataState.error(e.message.toString())
+            DataState.data(null, viewState)
+        } catch (e: FirebaseNetworkException) {
+            DataState.error(e.message.toString())
         }
     }
 

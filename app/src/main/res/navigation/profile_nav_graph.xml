@@ -9,6 +9,5 @@
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.leewilson.movienights.ui.main.profile.ProfileFragment"
-        android:label="ProfileFragment" />
+        android:name="com.leewilson.movienights.ui.main.profile.ProfileFragment" />
 </navigation>
