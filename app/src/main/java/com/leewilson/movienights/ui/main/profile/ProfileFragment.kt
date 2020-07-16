@@ -2,13 +2,12 @@ package com.leewilson.movienights.ui.main.profile
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
@@ -27,15 +26,26 @@ class ProfileFragment : BaseMainFragment(R.layout.fragment_profile) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        NavigationUI.setupActionBarWithNavController(
-            activity as AppCompatActivity,
-            findNavController()
-        )
+        setHasOptionsMenu(true)
 
         addListeners()
         subscribeObservers()
         viewModel.setStateEvent(ProfileStateEvent.FetchUserData)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_profile_edit, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.menuitem_edit_profile -> {
+                findNavController().navigate(R.id.action_profileFragment_to_updateProfileFragment)
+                return true
+            }
+        }
+        return false
     }
 
     private fun subscribeObservers() {

@@ -8,8 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
+import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.leewilson.movienights.R
 
@@ -17,15 +20,14 @@ class BottomNavController(
     context: Context,
     @IdRes val containerId: Int,
     @IdRes val appStartDestinationId: Int,
-    val graphChangeListener: OnNavigationGraphChanged?,
+    var graphChangeListener: OnNavigationGraphChanged? = null,
     val navGraphProvider: NavGraphProvider
 ) {
-    private val TAG: String = "AppDebug"
+
     private val navigationBackStack = BackStack.of(appStartDestinationId)
     lateinit var activity: Activity
     lateinit var fragmentManager: FragmentManager
     lateinit var navItemChangeListener: OnNavigationItemChanged
-
 
     init {
         if (context is Activity) {
@@ -73,7 +75,17 @@ class BottomNavController(
             // stack
 
             childFragmentManager.popBackStackImmediate() -> {
+                NavigationUI.navigateUp(
+                    findNavController(activity, R.id.mainFragmentContainer),
+                    AppBarConfiguration(setOf(
+                    R.id.profileFragment,
+                    R.id.calendarFragment,
+                    R.id.searchMovieFragment,
+                    R.id.feedFragment
+                ))
+                )
             }
+
             // Fragment back stack is empty so try to go back on the navigation stack
             navigationBackStack.size > 1 -> {
                 // Remove last item from back stack

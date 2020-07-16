@@ -1,13 +1,19 @@
 package com.leewilson.movienights.ui.main
 
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.leewilson.movienights.R
 import com.leewilson.movienights.ui.main.feed.FeedItemDetailFragment
 import com.leewilson.movienights.ui.main.newpost.CreateMovieNightFragment
+import com.leewilson.movienights.ui.main.profile.UpdateProfileFragment
 import com.leewilson.movienights.util.BottomNavController
 import com.leewilson.movienights.util.setUpNavigation
 import dagger.hilt.android.AndroidEntryPoint
@@ -16,8 +22,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(),
     BottomNavController.NavGraphProvider,
-    BottomNavController.OnNavigationGraphChanged,
-    BottomNavController.OnNavigationReselectedListener {
+    BottomNavController.OnNavigationReselectedListener
+{
 
     private lateinit var bottomNavigationView: BottomNavigationView
 
@@ -26,7 +32,6 @@ class MainActivity : AppCompatActivity(),
             context = this,
             containerId = R.id.mainFragmentContainer,
             appStartDestinationId = R.id.bottom_nav_menu_feed,
-            graphChangeListener = this,
             navGraphProvider = this
         )
     }
@@ -50,8 +55,13 @@ class MainActivity : AppCompatActivity(),
         else -> R.navigation.feed_nav_graph
     }
 
-    override fun onGraphChange() {
-        // Do nothing for now
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            android.R.id.home -> {
+                bottomNavController.onBackPressed()
+            }
+        }
+        return false
     }
 
     override fun onBackPressed() = bottomNavController.onBackPressed()
@@ -64,6 +74,10 @@ class MainActivity : AppCompatActivity(),
 
             is CreateMovieNightFragment -> {
                 navController.navigate(R.id.action_createMovieNightFragment_to_searchMovieFragment)
+            }
+
+            is UpdateProfileFragment -> {
+                navController.navigate(R.id.action_updateProfileFragment_to_profileFragment)
             }
 
             else -> {

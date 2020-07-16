@@ -9,5 +9,20 @@
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.leewilson.movienights.ui.main.profile.ProfileFragment" />
+        android:label="Profile"
+        android:name="com.leewilson.movienights.ui.main.profile.ProfileFragment" >
+        <action
+            android:id="@+id/action_profileFragment_to_updateProfileFragment"
+            app:destination="@id/updateProfileFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/updateProfileFragment"
+        android:name="com.leewilson.movienights.ui.main.profile.UpdateProfileFragment"
+        android:label="Update profile" >
+        <action
+            android:id="@+id/action_updateProfileFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+
 </navigation>

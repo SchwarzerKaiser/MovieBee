@@ -6,18 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.leewilson.movienights.R
+import com.leewilson.movienights.ui.main.BaseMainFragment
 
-class FeedItemDetailFragment : Fragment() {
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_feeditemdetail, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-}
+class FeedItemDetailFragment : BaseMainFragment(R.layout.fragment_feeditemdetail)
