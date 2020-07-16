@@ -3,14 +3,9 @@ package com.leewilson.movienights.ui.main.profile
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
 import com.leewilson.movienights.R
 import com.leewilson.movienights.ui.auth.AuthActivity
 import com.leewilson.movienights.ui.main.BaseMainFragment
@@ -39,7 +34,7 @@ class ProfileFragment : BaseMainFragment(R.layout.fragment_profile) {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        when (item.itemId) {
             R.id.menuitem_edit_profile -> {
                 findNavController().navigate(R.id.action_profileFragment_to_updateProfileFragment)
                 return true
@@ -51,6 +46,7 @@ class ProfileFragment : BaseMainFragment(R.layout.fragment_profile) {
     private fun subscribeObservers() {
         viewModel.dataState.observe(viewLifecycleOwner, Observer { state ->
             showProgressBar(state.loading)
+            hideFragmentRootView(state.loading)
             state.message?.let { event ->
                 event.getContentIfNotHandled()?.let { message ->
                     showSnackbar(message)
@@ -60,6 +56,8 @@ class ProfileFragment : BaseMainFragment(R.layout.fragment_profile) {
                 event.getContentIfNotHandled()?.let {
                     displayName.text = it.displayName
                     profileBio.text = it.bio
+                    followersTextView.text = it.followers.size.toString()
+                    followingTextView.text = it.following.size.toString()
                 }
             }
         })

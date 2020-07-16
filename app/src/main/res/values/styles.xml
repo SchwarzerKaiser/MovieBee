@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:app="http://schemas.android.com/apk/res-auto">
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
@@ -9,6 +9,10 @@
 
     <style name="MyAutofilledHighlight" parent="Theme.MaterialComponents.NoActionBar">
         <item name="android:autofilledHighlight">@drawable/empty_drawable_autofill_highlight</item>
+    </style>
+
+    <style name="TextInputLayoutProfile" parent="Widget.Design.TextInputLayout">
+        <item name="boxBackgroundColor">@android:color/white</item>
     </style>
 
 </resources>

@@ -4,7 +4,10 @@ class Constants {
 
     companion object {
 
+        const val USER_UPDATE_FAILED = "Failed to update user. Please check your connection."
 
+        // Status on updating Firestore user
+        const val USER_UPDATE_SUCCESS = "Successfully updated user information"
 
         // Error messages
         const val INCORRECT_PASSWORD = "Your password/email is incorrect. Please try again."

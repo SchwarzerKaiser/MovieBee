@@ -2,8 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/menuitem_edit_profile"
-        android:icon="@drawable/ic_baseline_edit_24"
-        android:title="Edit"
+        android:id="@+id/menuitem_save_profile"
+        android:icon="@drawable/ic_round_save_24"
+        android:title="Save"
         app:showAsAction="ifRoom" />
 </menu>

@@ -1,10 +1,8 @@
 package com.leewilson.movienights.ui.main
 
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
 import androidx.annotation.LayoutRes
-import androidx.annotation.NavigationRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -20,6 +18,8 @@ import kotlinx.android.synthetic.main.activity_main.*
  * @param resId The layout resource id for the Fragment
  */
 open class BaseMainFragment(@LayoutRes resId: Int) : Fragment(resId) {
+
+    private var rootHasBeenHidden = false;
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -43,6 +43,17 @@ open class BaseMainFragment(@LayoutRes resId: Int) : Fragment(resId) {
         (activity as MainActivity).run {
             mainProgressBar.visibility =
                 if (showing) View.VISIBLE else View.INVISIBLE
+        }
+    }
+
+    fun hideFragmentRootView(hideView: Boolean) {
+        if (hideView) {
+            if (!rootHasBeenHidden) {
+                view?.visibility = View.INVISIBLE
+                rootHasBeenHidden = true
+            }
+        } else {
+            view?.visibility = View.VISIBLE
         }
     }
 

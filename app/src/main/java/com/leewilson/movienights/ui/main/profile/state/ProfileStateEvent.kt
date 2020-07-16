@@ -6,6 +6,7 @@ sealed class ProfileStateEvent {
 
     data class UpdateUserData(
         var displayName: String? = null,
+        var email: String? = null,
         var bio: String? = null
-    )
+    ) : ProfileStateEvent()
 }
