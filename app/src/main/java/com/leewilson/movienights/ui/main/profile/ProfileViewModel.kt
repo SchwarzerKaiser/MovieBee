@@ -8,6 +8,7 @@ import com.leewilson.movienights.ui.main.profile.state.ProfileStateEvent.UpdateU
 import com.leewilson.movienights.ui.main.profile.state.ProfileViewState
 import com.leewilson.movienights.util.AbsentLiveData
 import com.leewilson.movienights.util.DataState
+import kotlinx.coroutines.yield
 
 class ProfileViewModel @ViewModelInject constructor(
     private val repository: ProfileRepository
@@ -62,6 +63,8 @@ class ProfileViewModel @ViewModelInject constructor(
                 updates["bio"] = stateEvent.bio!!
             if (cachedFields.email != stateEvent.email)
                 updates["email"] = stateEvent.email!!
+            if (cachedFields.imageUri != stateEvent.imageUri)
+                updates["imageUri"] = stateEvent.imageUri!!
             return updates
         } ?: return HashMap()
     }

@@ -78,9 +78,11 @@ dependencies {
     kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
 
     // Firebase
-    implementation 'com.google.firebase:firebase-auth-ktx:19.3.1'
-    implementation 'com.google.firebase:firebase-core:17.4.3'
-    implementation 'com.google.firebase:firebase-firestore-ktx:21.4.3'
+    implementation 'com.google.firebase:firebase-auth-ktx:19.3.2'
+    implementation 'com.google.firebase:firebase-core:17.4.4'
+    implementation 'com.google.firebase:firebase-firestore-ktx:21.5.0'
+    implementation 'com.google.firebase:firebase-storage:19.1.1'
+    implementation 'com.google.firebase:firebase-auth:19.3.2'
 
 
     // Coroutines
@@ -134,10 +136,8 @@ dependencies {
     def recyclerview_version = "1.1.0-beta03"
     implementation "androidx.recyclerview:recyclerview:$recyclerview_version"
 
-    // Glide
-    def glide_version = "4.9.0"
-    implementation "com.github.bumptech.glide:glide:$glide_version"
-    annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
+    // Image loader
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
     // CircleImageView
     implementation 'de.hdodenhof:circleimageview:3.1.0'

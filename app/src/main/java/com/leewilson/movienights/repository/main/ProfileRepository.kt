@@ -1,10 +1,18 @@
 package com.leewilson.movienights.repository.main
 
 import android.content.SharedPreferences
+import android.net.Uri
+import android.util.Log
+import com.google.android.gms.tasks.Task
+import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageMetadata
+import com.google.firebase.storage.StorageReference
 import com.leewilson.movienights.persistence.UserPropertiesDao
 import com.leewilson.movienights.ui.main.profile.state.ProfileViewState
 import com.leewilson.movienights.util.Constants
@@ -13,7 +21,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import java.lang.Exception
+import java.lang.IllegalStateException
+import java.net.URI
+import java.net.URL
 import javax.inject.Inject
 
 class ProfileRepository @Inject constructor(
@@ -21,8 +33,11 @@ class ProfileRepository @Inject constructor(
     private val auth: FirebaseAuth,
     private val sharedPrefEditor: SharedPreferences.Editor,
     private val sharedPreferences: SharedPreferences,
-    private val userDao: UserPropertiesDao
+    private val userDao: UserPropertiesDao,
+    private val storageReference: StorageReference
 ) {
+
+    private val TAG = "ProfileRepository"
 
     suspend fun getUserData(): DataState<ProfileViewState> {
         val collectionRef = firebaseFirestore.collection("users")
@@ -54,6 +69,12 @@ class ProfileRepository @Inject constructor(
                 user?.updateEmail(propertiesMap["email"] as String)?.await()
             }
 
+            // If there's a new image URI then action that
+            if (propertiesMap.containsKey("imageUri")) {
+                val downloadUrl = updateProfileImage(Uri.parse(propertiesMap["imageUri"] as String))
+                propertiesMap["imageUri"] = downloadUrl.toString()
+            }
+
             // Update user document in Firestore
             collectionRef
                 .document(uid!!)
@@ -71,5 +92,23 @@ class ProfileRepository @Inject constructor(
         sharedPrefEditor.remove(Constants.CURRENT_USER_UID)
         sharedPrefEditor.apply()
         userDao.nullifyOnLogout()
+    }
+
+    suspend fun updateProfileImage(uri: Uri): Uri? {
+        val uid = sharedPreferences.getString(Constants.CURRENT_USER_UID, "")
+        val userRef = storageReference.child("userImages").child(uid!!)
+        try {
+            val task = userRef.putFile(uri)
+            var getUrlTask: Task<Uri>? = null
+            task.addOnSuccessListener { snapshot ->
+                getUrlTask = snapshot.storage.downloadUrl
+            }.await()
+            getUrlTask?.let {
+                return it.await()
+            }
+        } catch (e: FirebaseException) {
+            Log.e(TAG, "updateProfileImage: ", e)
+        }
+        return null
     }
 }

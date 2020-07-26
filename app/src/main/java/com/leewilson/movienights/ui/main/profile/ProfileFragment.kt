@@ -11,13 +11,18 @@ import com.leewilson.movienights.ui.auth.AuthActivity
 import com.leewilson.movienights.ui.main.BaseMainFragment
 import com.leewilson.movienights.ui.main.MainActivity
 import com.leewilson.movienights.ui.main.profile.state.ProfileStateEvent
+import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_profile.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ProfileFragment : BaseMainFragment(R.layout.fragment_profile) {
 
     private val viewModel: ProfileViewModel by viewModels()
+
+    @Inject
+    lateinit var picasso: Picasso
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -58,6 +63,10 @@ class ProfileFragment : BaseMainFragment(R.layout.fragment_profile) {
                     profileBio.text = it.bio
                     followersTextView.text = it.followers.size.toString()
                     followingTextView.text = it.following.size.toString()
+                    picasso.load(it.imageUri)
+                        .placeholder(R.drawable.default_profile_img)
+                        .rotate(270f)
+                        .into(profileImageView)
                 }
             }
         })

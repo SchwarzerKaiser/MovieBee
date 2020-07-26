@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.activity_main.*
  *
  * @param resId The layout resource id for the Fragment
  */
-open class BaseMainFragment(@LayoutRes resId: Int) : Fragment(resId) {
+abstract class BaseMainFragment(@LayoutRes resId: Int) : Fragment(resId) {
 
     private var rootHasBeenHidden = false;
 
