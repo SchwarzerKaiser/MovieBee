@@ -27,6 +27,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class UpdateProfileFragment : BaseMainFragment(R.layout.fragment_update_profile) {
+
     private val REQUEST_IMAGE_CAPTURE = 1
 
     private val viewModel: ProfileViewModel by viewModels()
@@ -65,6 +66,7 @@ class UpdateProfileFragment : BaseMainFragment(R.layout.fragment_update_profile)
 
             // Save to file and get URI
             val file = createImageFile()
+            changedProfileImageUri = Uri.fromFile(file)
             val stream = FileOutputStream(file)
             imageBitmap
                 .compress(
@@ -72,7 +74,6 @@ class UpdateProfileFragment : BaseMainFragment(R.layout.fragment_update_profile)
                 100,
                 stream
             )
-            changedProfileImageUri = Uri.fromFile(file)
             picasso.load(changedProfileImageUri)
                 .rotate(270f)
                 .into(profileImageView)
@@ -102,13 +103,13 @@ class UpdateProfileFragment : BaseMainFragment(R.layout.fragment_update_profile)
                         displayName = updateProfileNameField.text.toString(),
                         email = updateProfileEmailField.text.toString(),
                         bio = updateProfileBioField.text.toString(),
-                        imageUri = changedProfileImageUri.toString()
+                        imageUri = if (changedProfileImageUri == null) null else changedProfileImageUri.toString()
                     )
                 )
                 return true
             }
         }
-        return false
+        return super.onOptionsItemSelected(item)
     }
 
     private fun subscribeObservers() {

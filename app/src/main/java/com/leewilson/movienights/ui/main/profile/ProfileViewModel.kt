@@ -54,17 +54,17 @@ class ProfileViewModel @ViewModelInject constructor(
         _stateEvent.value = event
     }
 
-    private fun mapUpdatedValues(stateEvent: UpdateUserData): HashMap<String, Any> {
+    private fun mapUpdatedValues(stateEvent: UpdateUserData): HashMap<String, String?> {
         cachedFields?.let { cachedFields ->
-            val updates = HashMap<String, Any>()
+            val updates = HashMap<String, String?>()
             if (cachedFields.displayName != stateEvent.displayName)
-                updates["displayName"] = stateEvent.displayName!!
+                updates["displayName"] = stateEvent.displayName
             if (cachedFields.bio != stateEvent.bio)
-                updates["bio"] = stateEvent.bio!!
+                updates["bio"] = stateEvent.bio
             if (cachedFields.email != stateEvent.email)
-                updates["email"] = stateEvent.email!!
+                updates["email"] = stateEvent.email
             if (cachedFields.imageUri != stateEvent.imageUri)
-                updates["imageUri"] = stateEvent.imageUri!!
+                stateEvent.imageUri?.let { updates["imageUri"] = it }
             return updates
         } ?: return HashMap()
     }

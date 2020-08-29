@@ -54,11 +54,11 @@ class ProfileRepository @Inject constructor(
         }
     }
 
-    suspend fun updateFirestoreUser(propertiesMap: HashMap<String, Any>): DataState<ProfileViewState> {
+    suspend fun updateFirestoreUser(propertiesMap: HashMap<String, String?>): DataState<ProfileViewState> {
         val collectionRef = firebaseFirestore.collection("users")
         val uid = sharedPreferences.getString(Constants.CURRENT_USER_UID, "")
-        try {
 
+        try {
             // If empty return nothing
             if (propertiesMap.isEmpty())
                 return DataState.data(null)
@@ -71,8 +71,10 @@ class ProfileRepository @Inject constructor(
 
             // If there's a new image URI then action that
             if (propertiesMap.containsKey("imageUri")) {
-                val downloadUrl = updateProfileImage(Uri.parse(propertiesMap["imageUri"] as String))
-                propertiesMap["imageUri"] = downloadUrl.toString()
+                propertiesMap["imageUri"]?.let {
+                    val downloadUrl = updateProfileImage(Uri.parse(propertiesMap["imageUri"] as String))
+                    propertiesMap["imageUri"] = downloadUrl.toString()
+                }
             }
 
             // Update user document in Firestore
