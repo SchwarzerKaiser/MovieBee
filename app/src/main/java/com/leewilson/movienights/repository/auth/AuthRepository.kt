@@ -99,7 +99,7 @@ class AuthRepository @Inject constructor(
 
             authResult.user?.let { user ->
                 storeUserLocally(user, password)
-                createDbUser(name, user)
+                createDbUser(name, user, email)
                 return@register DataState.data(
                     null,
                     AuthViewState(user.uid)
@@ -115,10 +115,14 @@ class AuthRepository @Inject constructor(
         return DataState.error("Something went wrong.")
     }
 
-    private fun createDbUser(name: String, user: FirebaseUser) {
+    private fun createDbUser(name: String, user: FirebaseUser, email: String) {
         firebaseDbRef.collection("users")
             .document(user.uid)
-            .set(User(user.uid, name))
+            .set(hashMapOf(
+                "displayName" to name,
+                "email" to email,
+                "uid" to user.uid
+            ))
     }
 
     private fun storeUserLocally(user: FirebaseUser, password: String) {

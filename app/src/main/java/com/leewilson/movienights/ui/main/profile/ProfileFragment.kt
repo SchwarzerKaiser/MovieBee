@@ -63,10 +63,12 @@ class ProfileFragment : BaseMainFragment(R.layout.fragment_profile) {
                     profileBio.text = it.bio
                     followersTextView.text = it.followers.size.toString()
                     followingTextView.text = it.following.size.toString()
-                    picasso.load(it.imageUri)
-                        .placeholder(R.drawable.default_profile_img)
-                        .rotate(270f)
-                        .into(profileImageView)
+                    if(it.imageUri.isNotBlank()) {
+                        picasso.load(it.imageUri)
+                            .placeholder(R.drawable.default_profile_img)
+                            .rotate(270f)
+                            .into(profileImageView)
+                    }
                 }
             }
         })

@@ -18,7 +18,9 @@ import com.leewilson.movienights.ui.main.BaseMainFragment
 import com.leewilson.movienights.ui.main.profile.state.ProfileStateEvent
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_update_profile.*
+import kotlinx.android.synthetic.main.fragment_update_profile.profileImageView
 import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
@@ -126,10 +128,12 @@ class UpdateProfileFragment : BaseMainFragment(R.layout.fragment_update_profile)
                     updateProfileNameField.setText(viewState.displayName)
                     updateProfileEmailField.setText(viewState.email)
                     updateProfileBioField.setText(viewState.bio)
-                    picasso.load(viewState.imageUri)
-                        .placeholder(R.drawable.default_profile_img)
-                        .rotate(270f)
-                        .into(profileImageView)
+                    if(viewState.imageUri.isNotBlank()) {
+                        picasso.load(viewState.imageUri)
+                            .placeholder(R.drawable.default_profile_img)
+                            .rotate(270f)
+                            .into(profileImageView)
+                    }
                 }
             }
         })
