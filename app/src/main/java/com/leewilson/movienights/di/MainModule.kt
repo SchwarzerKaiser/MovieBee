@@ -9,6 +9,10 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.leewilson.movienights.BuildConfig
+import com.leewilson.movienights.api.OMDBService
 import com.leewilson.movienights.persistence.AppDatabase
 import com.leewilson.movienights.persistence.UserPropertiesDao
 import com.leewilson.movienights.util.Constants
@@ -18,10 +22,43 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityRetainedComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 @Module
 @InstallIn(ActivityRetainedComponent::class)
 class MainModule {
+
+    @Provides
+    fun provideGsonInstance(): Gson {
+        return GsonBuilder()
+            .excludeFieldsWithoutExposeAnnotation()
+            .create()
+    }
+
+    @Provides
+    fun provideGsonConverterFactory(gson: Gson): GsonConverterFactory {
+        return GsonConverterFactory.create(gson)
+    }
+
+    @Provides
+    fun provideRetrofitInstance(gsonConverterFactory: GsonConverterFactory): Retrofit {
+        val interceptor = HttpLoggingInterceptor()
+        interceptor.level = HttpLoggingInterceptor.Level.BODY
+        val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
+        return Retrofit.Builder()
+            .baseUrl(Constants.OMDB_URL)
+            .client(client)
+            .addConverterFactory(gsonConverterFactory)
+            .build()
+    }
+
+    @Provides
+    fun provideOmdbService(retrofit: Retrofit): OMDBService {
+        return retrofit.create(OMDBService::class.java)
+    }
 
     @Provides
     fun providePicassoInstance(): Picasso {

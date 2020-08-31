@@ -25,5 +25,10 @@ class Constants {
 
         // uid string extra
         const val UID_STRING_EXTRA = "com.leewilson.movienights.UID_STRING_EXTRA"
+
+
+
+        // OMDB API url
+        const val OMDB_URL = "https://www.omdbapi.com/"
     }
 }

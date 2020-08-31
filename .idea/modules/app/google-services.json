@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "12822364501",
+    "firebase_url": "https://movienights-70182.firebaseio.com",
+    "project_id": "movienights-70182",
+    "storage_bucket": "movienights-70182.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:12822364501:android:452844dc9749a1b8a92fdc",
+        "android_client_info": {
+          "package_name": "com.leewilson.movienights"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "12822364501-2hnpkbfvhg887cokgq7prvmqf7i1ok8o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.leewilson.movienights",
+            "certificate_hash": "b35ce9e9adc97e84ee596b792ca63d8bc0a92176"
+          }
+        },
+        {
+          "client_id": "12822364501-q8melef1kd7fdricanh0n3cmc8ebd5au.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeQPBv9svPJAq_t4UPOoChsSp3j8YKEo4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "12822364501-q8melef1kd7fdricanh0n3cmc8ebd5au.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

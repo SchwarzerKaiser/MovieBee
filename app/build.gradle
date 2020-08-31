@@ -5,6 +5,10 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
 apply plugin: 'com.google.gms.google-services'
 
+def apikeyPropertiesFile = rootProject.file("apikey.properties")
+def apikeyProperties = new Properties()
+apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
+
 android {
     compileSdkVersion 29
 
@@ -16,6 +20,8 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "OMDB_KEY", apikeyProperties['OMDB_KEY'])
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -71,6 +77,7 @@ dependencies {
     def retrofit2_version = "2.9.0"
     implementation "com.squareup.retrofit2:retrofit:$retrofit2_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit2_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.2.1"
 
     // -- Lifecycle Components (ViewModel, LiveData and ReactiveStreams)
     def lifecycle_version = "2.2.0-alpha03"

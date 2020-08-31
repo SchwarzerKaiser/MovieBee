@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.leewilson.movienights.BaseApplication
+import com.leewilson.movienights.BuildConfig
 import com.leewilson.movienights.R
 import com.leewilson.movienights.ui.auth.state.AuthStateEvent
 import dagger.hilt.android.AndroidEntryPoint
