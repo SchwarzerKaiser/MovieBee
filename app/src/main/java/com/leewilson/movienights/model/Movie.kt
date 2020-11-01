@@ -21,7 +21,7 @@ data class Movie(
     @Expose
     val type: String,
 
-    @SerializedName("poster")
+    @SerializedName("Poster")
     @Expose
     val posterUrl: String
 )

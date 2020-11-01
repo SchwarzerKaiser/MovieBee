@@ -11,5 +11,6 @@ data class ApiResponse(
     val results: List<Movie>,
 
     @SerializedName("totalResults")
+    @Expose
     val totalResults: Int
 )

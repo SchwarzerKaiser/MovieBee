@@ -9,5 +9,8 @@ import retrofit2.http.Query
 interface OMDBService {
 
     @GET("?apikey=${BuildConfig.OMDB_KEY}")
-    suspend fun searchOmdbByName(@Query("s") searchTerm: String): ApiResponse
+    suspend fun searchOmdbByName(
+        @Query("s") searchTerm: String,
+        @Query("page") page: Int
+    ): ApiResponse
 }
