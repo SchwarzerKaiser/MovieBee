@@ -6,13 +6,13 @@ import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.leewilson.movienights.R
 import com.leewilson.movienights.model.Movie
 import com.leewilson.movienights.ui.main.BaseMainFragment
 import com.leewilson.movienights.ui.main.newpost.state.SearchStateEvent
 import com.leewilson.movienights.ui.main.newpost.state.SearchViewState
 import com.leewilson.movienights.util.TopSpacingItemDecoration
+import com.leewilson.movienights.util.WrapContentLinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_searchmovie.*
 
@@ -72,6 +72,7 @@ class SearchMovieFragment : BaseMainFragment(R.layout.fragment_searchmovie) {
                     viewModel.resultsLoaded += dataState.listMovies.size
                     viewModel.totalResults = dataState.totalResults
                     moviesAdapter.submitList(dataState.listMovies)
+                    moviesAdapter.notifyDataSetChanged()
                 }
             }
         })
@@ -79,7 +80,7 @@ class SearchMovieFragment : BaseMainFragment(R.layout.fragment_searchmovie) {
 
     private fun setUpRecyclerView() = moviesRecyclerView.apply {
         adapter = moviesAdapter
-        layoutManager = LinearLayoutManager(requireContext())
+        layoutManager = WrapContentLinearLayoutManager(requireContext())
         addItemDecoration(
             TopSpacingItemDecoration(30)
         )

@@ -48,12 +48,16 @@ class SearchMovieViewModel @ViewModelInject constructor(
                 emit(LoadingState)
                 currentSearchQuery?.let {
                     val result: SearchViewState = repository.searchMovies(it, page)
-                    val newResults = (result as SearchResultsState).listMovies
-                    results += newResults
-                    emit(SearchResultsState(
-                        results,
-                        result.totalResults
-                    ))
+                    if (result is ErrorState) {
+                        emit(result)
+                    } else {
+                        val newResults = (result as SearchResultsState).listMovies
+                        results += newResults
+                        emit(SearchResultsState(
+                            results,
+                            result.totalResults
+                        ))
+                    }
                 }
             }
         }

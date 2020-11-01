@@ -74,10 +74,6 @@ class SearchMoviesAdapter(
             itemView.setOnClickListener {
                 interaction?.onItemSelected(adapterPosition, item)
             }
-            if (adapterPosition % 2 != 0) {
-                movieInfoLayout.gravity = Gravity.END
-                movieTitle.textAlignment = View.TEXT_ALIGNMENT_TEXT_END
-            }
             movieTitle.text = item.title
             movieYear.text = item.year
             val picasso = Picasso.get()
