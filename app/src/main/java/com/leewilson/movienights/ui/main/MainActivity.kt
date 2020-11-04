@@ -21,6 +21,8 @@ import com.leewilson.movienights.util.setUpNavigation
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 
+private const val SAVE_STATE_BACKSTACK = "SAVE_STATE_BACKSTACK"
+
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(),
     BottomNavController.NavGraphProvider,
@@ -46,7 +48,17 @@ class MainActivity : AppCompatActivity(),
 
         bottomNavigationView = findViewById(R.id.bottomNavigation)
         bottomNavigationView.setUpNavigation(bottomNavController, this)
+        savedInstanceState?.let { savedState ->
+            savedState.getParcelable<BottomNavController.BackStack>(SAVE_STATE_BACKSTACK)?.let {
+                bottomNavController.restoreState(it)
+            }
+        }
         bottomNavController.onNavigationItemSelected()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putParcelable(SAVE_STATE_BACKSTACK, bottomNavController.getState())
+        super.onSaveInstanceState(outState)
     }
 
     override fun getNavGraphId(itemId: Int): Int = when (itemId) {

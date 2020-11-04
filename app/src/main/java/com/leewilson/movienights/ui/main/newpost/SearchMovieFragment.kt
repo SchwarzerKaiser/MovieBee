@@ -16,12 +16,16 @@ import com.leewilson.movienights.util.WrapContentLinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_searchmovie.*
 
+private const val EXTRA_LIST_MOVIES = "EXTRA_LIST_MOVIES"
+
 @AndroidEntryPoint
 class SearchMovieFragment : BaseMainFragment(R.layout.fragment_searchmovie) {
 
     private val TAG = "SearchMovieFragment"
 
     private val viewModel: SearchMovieViewModel by viewModels()
+
+    private var listMovies: MutableList<Movie> = ArrayList()
 
     private val moviesAdapter: SearchMoviesAdapter by lazy {
         SearchMoviesAdapter(object : SearchMoviesAdapter.Interaction {
@@ -48,6 +52,7 @@ class SearchMovieFragment : BaseMainFragment(R.layout.fragment_searchmovie) {
         movieSearchField.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let {
+                    listMovies.clear()
                     viewModel.page = 1
                     viewModel.setStateEvent(SearchStateEvent.SearchMoviesStateEvent(it))
                 }

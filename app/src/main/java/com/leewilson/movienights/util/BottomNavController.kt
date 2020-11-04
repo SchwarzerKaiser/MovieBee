@@ -2,6 +2,7 @@ package com.leewilson.movienights.util
 
 import android.app.Activity
 import android.content.Context
+import android.os.Parcelable
 import androidx.annotation.IdRes
 import androidx.annotation.NavigationRes
 import androidx.fragment.app.Fragment
@@ -15,6 +16,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.leewilson.movienights.R
+import kotlinx.android.parcel.Parcelize
 
 class BottomNavController(
     context: Context,
@@ -24,7 +26,7 @@ class BottomNavController(
     val navGraphProvider: NavGraphProvider
 ) {
 
-    private val navigationBackStack = BackStack.of(appStartDestinationId)
+    private var navigationBackStack = BackStack.of(appStartDestinationId)
     lateinit var activity: Activity
     lateinit var fragmentManager: FragmentManager
     lateinit var navItemChangeListener: OnNavigationItemChanged
@@ -107,7 +109,8 @@ class BottomNavController(
         }
     }
 
-    private class BackStack : ArrayList<Int>() {
+    @Parcelize
+    class BackStack : ArrayList<Int>(), Parcelable {
         companion object {
             fun of(vararg elements: Int): BackStack {
                 val b = BackStack()
@@ -154,6 +157,16 @@ class BottomNavController(
             override fun onItemChanged(itemId: Int) {
                 listener.invoke(itemId)
             }
+        }
+    }
+
+    fun getState(): BackStack = navigationBackStack
+
+    fun restoreState(backStack: BackStack) {
+        if (backStack.isEmpty()) {
+            navigationBackStack = BackStack.of(appStartDestinationId)
+        } else {
+            navigationBackStack = backStack
         }
     }
 }
