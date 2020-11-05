@@ -55,6 +55,7 @@ class SearchMovieFragment : BaseMainFragment(R.layout.fragment_searchmovie) {
                     listMovies.clear()
                     viewModel.page = 1
                     viewModel.setStateEvent(SearchStateEvent.SearchMoviesStateEvent(it))
+                    hideSoftKeyboard(movieSearchField)
                 }
                 return true
             }

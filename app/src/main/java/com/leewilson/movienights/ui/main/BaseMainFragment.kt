@@ -1,7 +1,9 @@
 package com.leewilson.movienights.ui.main
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -44,6 +46,12 @@ abstract class BaseMainFragment(@LayoutRes resId: Int) : Fragment(resId) {
             mainProgressBar.visibility =
                 if (showing) View.VISIBLE else View.INVISIBLE
         }
+    }
+
+    fun hideSoftKeyboard(view: View) {
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE)
+                as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     fun hideFragmentRootView(hideView: Boolean) {
