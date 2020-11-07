@@ -2,12 +2,15 @@ package com.leewilson.movienights.ui.main.profile
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.*
+import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.leewilson.movienights.R
 import com.leewilson.movienights.ui.auth.AuthActivity
+import com.leewilson.movienights.ui.follow.*
 import com.leewilson.movienights.ui.main.BaseMainFragment
 import com.leewilson.movienights.ui.main.MainActivity
 import com.leewilson.movienights.ui.main.profile.state.ProfileStateEvent
@@ -78,6 +81,24 @@ class ProfileFragment : BaseMainFragment(R.layout.fragment_profile) {
         logoutBtn.setOnClickListener {
             viewModel.removeUserData()
             navToAuthActivity()
+        }
+
+        followersTextView.setOnClickListener {
+            if ((it as TextView).text == "0") return@setOnClickListener
+            val intent = Intent(requireContext(), FollowActivity::class.java)
+            intent.putExtra(EXTRA_FOLLOW_USERS_TYPE, FollowUsersType.FOLLOWERS as Parcelable)
+            intent.putStringArrayListExtra(EXTRA_USER_IDS, viewModel
+                .dataState.value?.data?.peekContent()?.followers)
+            requireActivity().startActivity(intent)
+        }
+
+        followingTextView.setOnClickListener {
+            if ((it as TextView).text == "0") return@setOnClickListener
+            val intent = Intent(requireContext(), FollowActivity::class.java)
+            intent.putExtra(EXTRA_FOLLOW_USERS_TYPE, FollowUsersType.FOLLOWING as Parcelable)
+            intent.putStringArrayListExtra(EXTRA_USER_IDS, viewModel
+                .dataState.value?.data?.peekContent()?.following)
+            requireActivity().startActivity(intent)
         }
     }
 
