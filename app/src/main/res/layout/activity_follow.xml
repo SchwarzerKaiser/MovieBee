@@ -22,6 +22,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/usersRecyclerView"
         tools:listitem="@layout/item_user"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
         app:layout_constraintTop_toBottomOf="@id/appBarLayout"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="match_parent"
