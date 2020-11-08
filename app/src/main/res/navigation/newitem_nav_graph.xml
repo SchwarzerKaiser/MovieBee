@@ -9,7 +9,7 @@
     <fragment
         android:id="@+id/searchMovieFragment"
         android:name="com.leewilson.movienights.ui.main.newpost.SearchMovieFragment"
-        android:label="SearchMovieFragment" >
+        android:label="Find a movie">
         <action
             android:id="@+id/action_searchMovieFragment_to_createMovieNightFragment"
             app:destination="@id/createMovieNightFragment" />
@@ -18,10 +18,13 @@
     <fragment
         android:id="@+id/createMovieNightFragment"
         android:name="com.leewilson.movienights.ui.main.newpost.CreateMovieNightFragment"
-        android:label="CreateMovieNightFragment" >
+        android:label="Create your movie night">
         <action
             android:id="@+id/action_createMovieNightFragment_to_searchMovieFragment"
             app:destination="@id/searchMovieFragment" />
+        <argument
+            android:name="movie"
+            app:argType="com.leewilson.movienights.model.Movie" />
     </fragment>
 
 </navigation>

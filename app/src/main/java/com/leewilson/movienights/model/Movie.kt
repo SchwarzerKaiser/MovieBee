@@ -1,8 +1,11 @@
 package com.leewilson.movienights.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class Movie(
 
     @SerializedName("Title")
@@ -24,4 +27,5 @@ data class Movie(
     @SerializedName("Poster")
     @Expose
     val posterUrl: String
-)
+
+): Parcelable

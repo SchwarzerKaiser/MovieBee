@@ -6,6 +6,7 @@ import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.leewilson.movienights.R
 import com.leewilson.movienights.model.Movie
 import com.leewilson.movienights.ui.main.BaseMainFragment
@@ -15,8 +16,6 @@ import com.leewilson.movienights.util.TopSpacingItemDecoration
 import com.leewilson.movienights.util.WrapContentLinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_searchmovie.*
-
-private const val EXTRA_LIST_MOVIES = "EXTRA_LIST_MOVIES"
 
 @AndroidEntryPoint
 class SearchMovieFragment : BaseMainFragment(R.layout.fragment_searchmovie) {
@@ -30,7 +29,7 @@ class SearchMovieFragment : BaseMainFragment(R.layout.fragment_searchmovie) {
     private val moviesAdapter: SearchMoviesAdapter by lazy {
         SearchMoviesAdapter(object : SearchMoviesAdapter.Interaction {
             override fun onItemSelected(position: Int, item: Movie) {
-                showSnackbar("Item selected at position: $position")
+                navToCreateMovieNightFragment(item)
             }
         }).apply {
             addOnBottomReachedListener {
@@ -38,6 +37,12 @@ class SearchMovieFragment : BaseMainFragment(R.layout.fragment_searchmovie) {
                 viewModel.requestMoreResults()
             }
         }
+    }
+
+    private fun navToCreateMovieNightFragment(item: Movie) {
+        val args = Bundle()
+        args.putParcelable(MOVIE_ARG, item)
+        findNavController().navigate(R.id.action_searchMovieFragment_to_createMovieNightFragment, args)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
