@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.leewilson.movienights.R
 import com.leewilson.movienights.model.Movie
+import com.leewilson.movienights.model.MovieDetail
 import com.leewilson.movienights.ui.main.BaseMainFragment
 import com.leewilson.movienights.ui.main.newpost.state.CreateMovieNightStateEvent
 import com.leewilson.movienights.ui.main.newpost.state.CreateMovieNightViewState
@@ -50,12 +51,14 @@ class CreateMovieNightFragment : BaseMainFragment(R.layout.fragment_createmovien
                 val state = consumableEvent.peekContent()
                 when (state) {
                     is CreateMovieNightViewState.MovieLoaded -> {
-                        Log.d(TAG, "subscribeObservers: ${
-                            state.details
-                        }")
+                        setMovieData(state.details)
                     }
                 }
             }
         })
+    }
+
+    private fun setMovieData(details: MovieDetail) {
+
     }
 }
