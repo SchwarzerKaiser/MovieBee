@@ -3,6 +3,7 @@ package com.leewilson.movienights.util
 import android.app.Activity
 import android.content.Context
 import android.os.Parcelable
+import android.util.Log
 import androidx.annotation.IdRes
 import androidx.annotation.NavigationRes
 import androidx.fragment.app.Fragment
@@ -17,6 +18,8 @@ import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.leewilson.movienights.R
 import kotlinx.android.parcel.Parcelize
+
+private const val TAG = "BottomNavController"
 
 class BottomNavController(
     context: Context,
@@ -69,6 +72,7 @@ class BottomNavController(
     fun onBackPressed() {
         val childFragmentManager = fragmentManager.findFragmentById(containerId)!!
             .childFragmentManager
+
         when {
             // We should always try to go back on the child fragment manager stack before going to
             // the navigation stack. It's important to use the child fragment manager instead of the
@@ -109,8 +113,7 @@ class BottomNavController(
         }
     }
 
-    @Parcelize
-    class BackStack : ArrayList<Int>(), Parcelable {
+    class BackStack : ArrayList<Int>() {
         companion object {
             fun of(vararg elements: Int): BackStack {
                 val b = BackStack()
@@ -160,13 +163,13 @@ class BottomNavController(
         }
     }
 
-    fun getState(): BackStack = navigationBackStack
+    fun getState(): ArrayList<Int> = navigationBackStack
 
-    fun restoreState(backStack: BackStack) {
+    fun restoreState(backStack: ArrayList<Int>) {
         if (backStack.isEmpty()) {
             navigationBackStack = BackStack.of(appStartDestinationId)
         } else {
-            navigationBackStack = backStack
+            navigationBackStack = BackStack.of(*backStack.toIntArray())
         }
     }
 }

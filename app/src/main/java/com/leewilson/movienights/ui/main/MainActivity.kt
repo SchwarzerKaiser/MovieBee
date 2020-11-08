@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity(),
         bottomNavigationView = findViewById(R.id.bottomNavigation)
         bottomNavigationView.setUpNavigation(bottomNavController, this)
         savedInstanceState?.let { savedState ->
-            savedState.getParcelable<BottomNavController.BackStack>(SAVE_STATE_BACKSTACK)?.let {
+            savedState.getIntegerArrayList(SAVE_STATE_BACKSTACK)?.let {
                 bottomNavController.restoreState(it)
             }
         }
@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putParcelable(SAVE_STATE_BACKSTACK, bottomNavController.getState())
+        outState.putIntegerArrayList(SAVE_STATE_BACKSTACK, bottomNavController.getState())
         super.onSaveInstanceState(outState)
     }
 
