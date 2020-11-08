@@ -39,12 +39,6 @@ class SearchMovieFragment : BaseMainFragment(R.layout.fragment_searchmovie) {
         }
     }
 
-    private fun navToCreateMovieNightFragment(item: Movie) {
-        val args = Bundle()
-        args.putParcelable(MOVIE_ARG, item)
-        findNavController().navigate(R.id.action_searchMovieFragment_to_createMovieNightFragment, args)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -95,6 +89,12 @@ class SearchMovieFragment : BaseMainFragment(R.layout.fragment_searchmovie) {
         addItemDecoration(
             TopSpacingItemDecoration(30)
         )
+    }
+
+    private fun navToCreateMovieNightFragment(item: Movie) {
+        val args = Bundle()
+        args.putParcelable(MOVIE_ARG, item)
+        findNavController().navigate(R.id.action_searchMovieFragment_to_createMovieNightFragment, args)
     }
 
     override fun onDestroyView() {

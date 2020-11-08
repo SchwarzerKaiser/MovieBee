@@ -29,7 +29,7 @@ class ConsumableEvent<T>(private val content: T) {
             return null
         }
 
-        fun messageEvent(message: String?): ConsumableEvent<String>?{
+        fun messageEvent(message: String?): ConsumableEvent<String>? {
             message?.let{
                 return ConsumableEvent(message)
             }
