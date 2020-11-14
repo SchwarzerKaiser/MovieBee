@@ -8,4 +8,5 @@
     <color name="colorTextWhite">#ffffff</color>
     <color name="colorTextBlack">#000000</color>
     <color name="colorTextBackgroundBlackFaded">#99000000</color>
+    <color name="colorDivider">#CACACA</color>
 </resources>

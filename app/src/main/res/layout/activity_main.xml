@@ -24,13 +24,14 @@
     <me.zhanghai.android.materialprogressbar.MaterialProgressBar
         style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"
         android:indeterminateTint="@color/colorAccent"
-        android:visibility="invisible"
+        android:visibility="gone"
         app:mpb_progressStyle="horizontal"
         android:indeterminate="true"
         android:id="@+id/mainProgressBar"
+        app:mpb_useIntrinsicPadding="false"
         app:layout_constraintTop_toBottomOf="@id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="4dp"/>
 
     <androidx.fragment.app.FragmentContainerView
         app:layout_constraintTop_toBottomOf="@id/mainProgressBar"

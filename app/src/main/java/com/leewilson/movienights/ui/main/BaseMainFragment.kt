@@ -44,7 +44,7 @@ abstract class BaseMainFragment(@LayoutRes resId: Int) : Fragment(resId) {
     fun showProgressBar(showing: Boolean) {
         (activity as MainActivity).run {
             mainProgressBar.visibility =
-                if (showing) View.VISIBLE else View.INVISIBLE
+                if (showing) View.VISIBLE else View.GONE
         }
     }
 

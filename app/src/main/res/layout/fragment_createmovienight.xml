@@ -1,6 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"/>
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="28dp"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/moviePoster"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/movie_placeholder"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/moviePosterSmall"
+            android:layout_width="100dp"
+            android:layout_height="160dp"
+            android:layout_marginStart="@dimen/movie_detail_margin"
+            android:layout_marginTop="175dp"
+            android:elevation="32dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/movie_placeholder"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/movieTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="@dimen/movie_detail_margin"
+            android:fontFamily="@font/biryani_semibold"
+            android:textColor="@color/colorTextBlack"
+            android:textSize="27sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/moviePosterSmall"
+            app:layout_constraintTop_toBottomOf="@+id/moviePosterSmall" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="3dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvImdbRating"
+            app:layout_constraintEnd_toStartOf="@+id/tvImdbRating"
+            app:layout_constraintTop_toTopOf="@+id/tvImdbRating"
+            app:srcCompat="@drawable/imdb_logo" />
+
+        <TextView
+            android:id="@+id/tvImdbRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/movie_detail_margin"
+            android:fontFamily="@font/biryani_semibold"
+            android:textSize="22sp"
+            app:layout_constraintBottom_toBottomOf="@+id/moviePosterSmall"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/moviePoster" />
+
+        <TextView
+            android:id="@+id/releaseYear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/biryani_semibold"
+            app:layout_constraintStart_toStartOf="@+id/movieTitle"
+            app:layout_constraintTop_toBottomOf="@+id/movieTitle" />
+
+        <TextView
+            android:id="@+id/parentalRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:fontFamily="@font/biryani_semibold"
+            app:layout_constraintBottom_toBottomOf="@+id/releaseYear"
+            app:layout_constraintStart_toEndOf="@+id/releaseYear" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/genreChipGroup"
+            android:layout_marginTop="4dp"
+            app:layout_constraintStart_toStartOf="@id/releaseYear"
+            app:layout_constraintTop_toBottomOf="@id/releaseYear"
+            app:layout_constraintEnd_toEndOf="@id/movieTitle"
+            android:layout_width="0dp"
+            android:layout_height="50dp"/>
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="@dimen/movie_detail_margin"
+            android:fontFamily="@font/biryani_extralight"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/genreChipGroup"
+            app:layout_constraintTop_toBottomOf="@id/genreChipGroup" />
+
+        <View
+            android:id="@+id/divider"
+            android:background="@color/colorDivider"
+            app:layout_constraintTop_toBottomOf="@id/description"
+            android:layout_marginTop="@dimen/movie_detail_margin"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/datePickerLayout"
+            style="@style/TextInputLayoutProfile"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/movie_detail_margin"
+            android:layout_marginStart="@dimen/movie_detail_margin"
+            android:layout_marginEnd="@dimen/movie_detail_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/divider"
+            app:layout_constraintTop_toBottomOf="@id/divider">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/movieNightDatePicker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Date"
+                android:inputType="date" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--<com.google.android.material.button.MaterialButton
+            android:text="Add to calendar"
+            app:layout_constraintTop_toBottomOf="@id/divider"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="@dimen/movie_detail_margin"
+            android:layout_marginEnd="@dimen/movie_detail_margin"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>-->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
