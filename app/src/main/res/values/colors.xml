@@ -9,4 +9,5 @@
     <color name="colorTextBlack">#000000</color>
     <color name="colorTextBackgroundBlackFaded">#99000000</color>
     <color name="colorDivider">#CACACA</color>
+    <color name="colorHighlyRatedMovie">#FFD249</color>
 </resources>

@@ -115,37 +115,48 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"/>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/datePickerLayout"
-            style="@style/TextInputLayoutProfile"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+        <TextView
             android:layout_marginTop="@dimen/movie_detail_margin"
-            android:layout_marginStart="@dimen/movie_detail_margin"
-            android:layout_marginEnd="@dimen/movie_detail_margin"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/divider"
-            app:layout_constraintTop_toBottomOf="@id/divider">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/movieNightDatePicker"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Date"
-                android:inputType="date" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!--<com.google.android.material.button.MaterialButton
-            android:text="Add to calendar"
+            android:id="@+id/movieNightDatePicker"
+            android:fontFamily="@font/biryani_semibold"
+            android:padding="8dp"
+            android:focusable="true"
+            android:clickable="true"
+            android:drawablePadding="8dp"
+            android:hint="Select date"
+            app:layout_constraintStart_toStartOf="@id/description"
+            app:layout_constraintEnd_toEndOf="@id/description"
             app:layout_constraintTop_toBottomOf="@id/divider"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="@dimen/movie_detail_margin"
-            android:layout_marginEnd="@dimen/movie_detail_margin"
-            android:layout_marginTop="16dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>-->
+            android:drawableStart="@drawable/ic_date"
+            android:background="@drawable/textview_background"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_marginTop="@dimen/movie_detail_margin"
+            android:id="@+id/movieNightTimePicker"
+            android:fontFamily="@font/biryani_semibold"
+            android:padding="8dp"
+            android:focusable="true"
+            android:clickable="true"
+            android:drawablePadding="8dp"
+            android:hint="Select time"
+            app:layout_constraintStart_toStartOf="@id/movieNightDatePicker"
+            app:layout_constraintEnd_toEndOf="@id/movieNightDatePicker"
+            app:layout_constraintTop_toBottomOf="@id/movieNightDatePicker"
+            android:drawableStart="@drawable/ic_clock"
+            android:background="@drawable/textview_background"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <com.google.android.material.button.MaterialButton
+            android:text="Add to calendar"
+            app:layout_constraintTop_toBottomOf="@id/movieNightTimePicker"
+            app:layout_constraintStart_toStartOf="@id/movieNightTimePicker"
+            app:layout_constraintEnd_toEndOf="@id/movieNightTimePicker"
+            android:layout_marginTop="@dimen/movie_detail_margin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
