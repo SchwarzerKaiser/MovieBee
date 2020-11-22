@@ -5,6 +5,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class FollowUser(
+    val uid: String,
     val displayName: String,
     val imageUrl: String
 ) : Parcelable

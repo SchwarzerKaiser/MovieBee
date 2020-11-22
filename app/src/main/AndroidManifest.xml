@@ -43,6 +43,9 @@
         <activity
             android:name=".ui.follow.FollowActivity"/>
 
+        <activity
+            android:name=".ui.selectguests.SelectGuestsActivity"/>
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

@@ -149,9 +149,46 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
 
+        <View
+            android:id="@+id/divider2"
+            android:background="@color/colorDivider"
+            android:layout_marginTop="@dimen/movie_detail_margin"
+            app:layout_constraintTop_toBottomOf="@id/movieNightTimePicker"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
+        <TextView
+            android:text="Guests:"
+            android:fontFamily="@font/biryani_semibold"
+            android:id="@+id/tvGalleryLabel"
+            app:layout_constraintTop_toBottomOf="@id/divider2"
+            app:layout_constraintStart_toStartOf="@id/movieNightTimePicker"
+            app:layout_constraintEnd_toEndOf="@id/movieNightTimePicker"
+            android:layout_marginTop="@dimen/movie_detail_margin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            app:layout_constraintTop_toBottomOf="@id/tvGalleryLabel"
+            android:layout_marginTop="4dp"
+            android:id="@+id/guestsGallery"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/selectGuestsFab"
+            android:backgroundTint="@color/colorPrimary"
+            android:src="@drawable/ic_add"
+            app:layout_constraintBottom_toBottomOf="@+id/guestsGallery"
+            app:layout_constraintEnd_toEndOf="@id/guestsGallery"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="@dimen/movie_detail_margin"
+            android:layout_marginBottom="@dimen/movie_detail_margin"
+            android:layout_height="wrap_content"/>
+
         <com.google.android.material.button.MaterialButton
             android:text="Add to calendar"
-            app:layout_constraintTop_toBottomOf="@id/movieNightTimePicker"
+            app:layout_constraintTop_toBottomOf="@id/guestsGallery"
             app:layout_constraintStart_toStartOf="@id/movieNightTimePicker"
             app:layout_constraintEnd_toEndOf="@id/movieNightTimePicker"
             android:layout_marginTop="@dimen/movie_detail_margin"

@@ -22,6 +22,7 @@ class FollowRepository @Inject constructor(
                 .documents
             val results = documents.map {
                 FollowUser(
+                    it["uid"] as String,
                     it["displayName"] as String,
                     it["imageUri"] as String
                 )

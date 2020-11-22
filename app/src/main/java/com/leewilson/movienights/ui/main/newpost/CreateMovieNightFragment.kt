@@ -2,6 +2,7 @@ package com.leewilson.movienights.ui.main.newpost
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -17,6 +18,7 @@ import com.leewilson.movienights.model.MovieDetail
 import com.leewilson.movienights.ui.main.BaseMainFragment
 import com.leewilson.movienights.ui.main.newpost.state.CreateMovieNightStateEvent
 import com.leewilson.movienights.ui.main.newpost.state.CreateMovieNightViewState
+import com.leewilson.movienights.ui.selectguests.SelectGuestsActivity
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_createmovienight.*
@@ -56,9 +58,21 @@ TimePickerDialog.OnTimeSetListener {
         }
         subscribeObservers()
         addListeners()
+        addActivityResultCallback()
+    }
+
+    private fun addActivityResultCallback() {
+//        registerForActivityResult()
     }
 
     private fun addListeners() {
+        selectGuestsFab.setOnClickListener {
+            startActivity(
+                Intent(
+                    activity, SelectGuestsActivity::class.java
+                )
+            )
+        }
         movieNightDatePicker.setOnClickListener {
             val calendar = Calendar.getInstance()
             val datePickerDialog = DatePickerDialog(
