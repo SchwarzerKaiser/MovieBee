@@ -1,5 +1,6 @@
 package com.leewilson.movienights.ui.main.newpost
 
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
@@ -9,16 +10,24 @@ import android.util.Log
 import android.view.View
 import android.widget.DatePicker
 import android.widget.TimePicker
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.contract.ActivityResultContracts.GetContent
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
 import com.leewilson.movienights.R
+import com.leewilson.movienights.model.FollowUser
 import com.leewilson.movienights.model.Movie
 import com.leewilson.movienights.model.MovieDetail
 import com.leewilson.movienights.ui.main.BaseMainFragment
 import com.leewilson.movienights.ui.main.newpost.state.CreateMovieNightStateEvent
 import com.leewilson.movienights.ui.main.newpost.state.CreateMovieNightViewState
 import com.leewilson.movienights.ui.selectguests.SelectGuestsActivity
+import com.leewilson.movienights.ui.selectguests.SelectedGuestsAdapter
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_createmovienight.*
@@ -35,6 +44,21 @@ DatePickerDialog.OnDateSetListener,
 TimePickerDialog.OnTimeSetListener {
 
     private val viewModel: CreateMovieNightViewModel by viewModels()
+
+    private val selectedGuestsAdapter = SelectedGuestsAdapter()
+
+    private val startForResult = registerForActivityResult(StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.let { intent ->
+                val guests = intent.getParcelableArrayListExtra<FollowUser>(
+                        SelectGuestsActivity.EXTRA_SELECTED_GUESTS
+                    )
+                guests?.let {
+                    selectedGuestsAdapter.submitList(it)
+                }
+            }
+        }
+    }
 
     private val picasso: Picasso by lazy {
         Picasso.get()
@@ -56,22 +80,21 @@ TimePickerDialog.OnTimeSetListener {
                 )
             }
         }
+        setupRecyclerView()
         subscribeObservers()
         addListeners()
-        addActivityResultCallback()
     }
 
-    private fun addActivityResultCallback() {
-//        registerForActivityResult()
+    private fun setupRecyclerView() {
+        guestsGallery.apply {
+            adapter = selectedGuestsAdapter
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        }
     }
 
     private fun addListeners() {
         selectGuestsFab.setOnClickListener {
-            startActivity(
-                Intent(
-                    activity, SelectGuestsActivity::class.java
-                )
-            )
+            startForResult.launch(Intent(activity, SelectGuestsActivity::class.java))
         }
         movieNightDatePicker.setOnClickListener {
             val calendar = Calendar.getInstance()
