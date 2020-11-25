@@ -54,6 +54,7 @@ TimePickerDialog.OnTimeSetListener {
                         SelectGuestsActivity.EXTRA_SELECTED_GUESTS
                     )
                 guests?.let {
+                    createMovieNightScrollView.fullScroll(View.FOCUS_DOWN)
                     selectedGuestsAdapter.submitList(it)
                 }
             }
