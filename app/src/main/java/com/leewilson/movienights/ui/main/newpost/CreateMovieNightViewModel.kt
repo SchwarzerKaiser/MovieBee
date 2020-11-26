@@ -30,6 +30,13 @@ class CreateMovieNightViewModel @ViewModelInject constructor(
                     emit(result)
                 }
             }
+            is CreateMovieNightStateEvent.SaveMovieNight -> {
+                return liveData(Dispatchers.IO) {
+                    emit(DataState.loading(true))
+                    val resultState = repository.saveMovieNight(event.movieNight)
+                    emit(resultState)
+                }
+            }
         }
     }
 

@@ -193,6 +193,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:text="Add to calendar"
+            android:id="@+id/saveMovieNightBtn"
             app:layout_constraintTop_toBottomOf="@id/guestsGallery"
             app:layout_constraintStart_toStartOf="@id/movieNightTimePicker"
             app:layout_constraintEnd_toEndOf="@id/movieNightTimePicker"

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -23,17 +24,25 @@ import com.leewilson.movienights.R
 import com.leewilson.movienights.model.FollowUser
 import com.leewilson.movienights.model.Movie
 import com.leewilson.movienights.model.MovieDetail
+import com.leewilson.movienights.model.MovieNight
 import com.leewilson.movienights.ui.main.BaseMainFragment
 import com.leewilson.movienights.ui.main.newpost.state.CreateMovieNightStateEvent
 import com.leewilson.movienights.ui.main.newpost.state.CreateMovieNightViewState
 import com.leewilson.movienights.ui.selectguests.SelectGuestsActivity
 import com.leewilson.movienights.ui.selectguests.SelectedGuestsAdapter
+import com.leewilson.movienights.util.Constants
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_createmovienight.*
 import java.lang.Exception
+import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.LocalTime
+import java.time.Month
+import java.time.format.DateTimeFormatter
 import java.util.*
+import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 const val MOVIE_ARG = "com.leewilson.movienights.ui.main.newpost.MOVIE_ARG"
 private const val TAG = "MovieNightFragment"
@@ -43,9 +52,17 @@ class CreateMovieNightFragment : BaseMainFragment(R.layout.fragment_createmovien
 DatePickerDialog.OnDateSetListener,
 TimePickerDialog.OnTimeSetListener {
 
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
+
     private val viewModel: CreateMovieNightViewModel by viewModels()
 
-    private val selectedGuestsAdapter = SelectedGuestsAdapter()
+    private var selectedGuestsAdapter: SelectedGuestsAdapter? = SelectedGuestsAdapter()
+
+    private var specifiedDate: LocalDate? = null
+    private var specifiedTime: String? = null
+    private var specifiedMovie: MovieDetail? = null
+    private var specifiedGuestUids: List<String> = ArrayList()
 
     private val startForResult = registerForActivityResult(StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -54,8 +71,8 @@ TimePickerDialog.OnTimeSetListener {
                         SelectGuestsActivity.EXTRA_SELECTED_GUESTS
                     )
                 guests?.let {
-                    createMovieNightScrollView.fullScroll(View.FOCUS_DOWN)
-                    selectedGuestsAdapter.submitList(it)
+                    selectedGuestsAdapter?.submitList(it)
+                    specifiedGuestUids = it.map { it.uid }
                 }
             }
         }
@@ -89,7 +106,11 @@ TimePickerDialog.OnTimeSetListener {
     private fun setupRecyclerView() {
         guestsGallery.apply {
             adapter = selectedGuestsAdapter
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = LinearLayoutManager(
+                requireContext(),
+                LinearLayoutManager.HORIZONTAL,
+                false
+            )
         }
     }
 
@@ -97,6 +118,7 @@ TimePickerDialog.OnTimeSetListener {
         selectGuestsFab.setOnClickListener {
             startForResult.launch(Intent(activity, SelectGuestsActivity::class.java))
         }
+
         movieNightDatePicker.setOnClickListener {
             val calendar = Calendar.getInstance()
             val datePickerDialog = DatePickerDialog(
@@ -108,6 +130,7 @@ TimePickerDialog.OnTimeSetListener {
             )
             datePickerDialog.show()
         }
+
         movieNightTimePicker.setOnClickListener {
             val timePickerDialog = TimePickerDialog(
                 requireContext(),
@@ -117,6 +140,32 @@ TimePickerDialog.OnTimeSetListener {
                 true
             )
             timePickerDialog.show()
+        }
+
+        saveMovieNightBtn.setOnClickListener {
+            if (specifiedDate == null) {
+                showSnackbar("Please specify a date.")
+                return@setOnClickListener
+            }
+            if (specifiedMovie == null) {
+                showSnackbar("Error!")
+                return@setOnClickListener
+            }
+            if (specifiedTime == null) {
+                showSnackbar("Please specify a time.")
+            }
+
+            viewModel.setStateEvent(
+                CreateMovieNightStateEvent.SaveMovieNight(
+                    MovieNight(
+                        sharedPreferences.getString(Constants.CURRENT_USER_UID, "")!!,
+                        specifiedGuestUids,
+                        specifiedMovie!!.imdbID,
+                        "${specifiedDate!!.year}-${specifiedDate!!.month}-${specifiedDate!!.dayOfMonth}",
+                        specifiedTime!!
+                    )
+                )
+            )
         }
     }
 
@@ -133,6 +182,7 @@ TimePickerDialog.OnTimeSetListener {
                 when (state) {
                     is CreateMovieNightViewState.MovieLoaded -> {
                         setMovieData(state.details)
+                        specifiedMovie = state.details
                         hideFragmentRootView(false)
                     }
                 }
@@ -175,13 +225,20 @@ TimePickerDialog.OnTimeSetListener {
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        val date = Date(year, month, dayOfMonth)
-        movieNightDatePicker.text = date.toString().take(10)
+        val dateString = "$year-${month + 1}-$dayOfMonth"
+        specifiedDate = LocalDate.parse(dateString)
+        movieNightDatePicker.text = dateString
     }
 
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
-        val hr = hourOfDay.toString().padStart(2, '0')
-        val min = minute.toString().padStart(2, '0')
-        movieNightTimePicker.text = "$hr:$min"
+        val paddedHour = hourOfDay.toString().padStart(2, '0')
+        val paddedMinute = minute.toString().padStart(2, '0')
+        specifiedTime = "$paddedHour:$paddedMinute"
+        movieNightTimePicker.text = "$paddedHour:$paddedMinute"
+    }
+
+    override fun onDestroyView() {
+        selectedGuestsAdapter = null
+        super.onDestroyView()
     }
 }

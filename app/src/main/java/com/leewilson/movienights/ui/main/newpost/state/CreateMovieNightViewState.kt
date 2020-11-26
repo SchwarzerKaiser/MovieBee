@@ -8,4 +8,8 @@ sealed class CreateMovieNightViewState {
     class MovieLoaded(
         val details: MovieDetail
     ) : CreateMovieNightViewState()
+
+    class MovieNightSaved(
+        val success: Boolean
+    ) : CreateMovieNightViewState()
 }
