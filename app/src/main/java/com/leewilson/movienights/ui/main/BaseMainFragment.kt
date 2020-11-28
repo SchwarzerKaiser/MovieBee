@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.leewilson.movienights.R
 import kotlinx.android.synthetic.main.activity_main.*
@@ -68,6 +69,7 @@ abstract class BaseMainFragment(@LayoutRes resId: Int) : Fragment(resId) {
     fun showSnackbar(message: String) {
         (activity as MainActivity).run {
             Snackbar.make(mainFragmentContainer, message, Snackbar.LENGTH_SHORT)
+                .setAnchorView(findViewById<BottomNavigationView>(R.id.bottomNavigation))
                 .show()
         }
     }
