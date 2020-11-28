@@ -42,7 +42,6 @@ import java.time.Month
 import java.time.format.DateTimeFormatter
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 const val MOVIE_ARG = "com.leewilson.movienights.ui.main.newpost.MOVIE_ARG"
 private const val TAG = "MovieNightFragment"
@@ -52,6 +51,13 @@ class CreateMovieNightFragment : BaseMainFragment(R.layout.fragment_createmovien
 DatePickerDialog.OnDateSetListener,
 TimePickerDialog.OnTimeSetListener {
 
+    companion object {
+        const val GUEST_UIDS = "com.leewilson.movienights.ui.main.newpost.CreateMovieNightFragment.GUEST_UIDS"
+        const val MOVIENIGHT_DATE = "com.leewilson.movienights.ui.main.newpost.CreateMovieNightFragment.MOVIENIGHT_DATE"
+        const val MOVIENIGHT_TIME = "com.leewilson.movienights.ui.main.newpost.CreateMovieNightFragment.MOVIENIGHT_TIME"
+        const val MOVIE_DETAIL = "com.leewilson.movienights.ui.main.newpost.CreateMovieNightFragment.MOVIE_DETAIL"
+    }
+
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 
@@ -59,10 +65,10 @@ TimePickerDialog.OnTimeSetListener {
 
     private var selectedGuestsAdapter: SelectedGuestsAdapter? = SelectedGuestsAdapter()
 
-    private var specifiedDate: LocalDate? = null
+    private var specifiedDate: String? = null
     private var specifiedTime: String? = null
     private var specifiedMovie: MovieDetail? = null
-    private var specifiedGuestUids: List<String> = ArrayList()
+    private var specifiedGuestUids: ArrayList<FollowUser> = ArrayList()
 
     private val startForResult = registerForActivityResult(StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -72,7 +78,7 @@ TimePickerDialog.OnTimeSetListener {
                     )
                 guests?.let {
                     selectedGuestsAdapter?.submitList(it)
-                    specifiedGuestUids = it.map { it.uid }
+                    specifiedGuestUids = it
                 }
             }
         }
@@ -97,6 +103,15 @@ TimePickerDialog.OnTimeSetListener {
                     )
                 )
             }
+        }
+        savedInstanceState?.let { savedState ->
+            specifiedMovie = savedState.getParcelable(MOVIE_DETAIL)
+            specifiedDate = savedState.getString(MOVIENIGHT_DATE)
+            movieNightDatePicker.text = specifiedDate
+            specifiedTime = savedState.getString(MOVIENIGHT_TIME)
+            movieNightTimePicker.text = specifiedTime
+            specifiedGuestUids = savedState.getParcelableArrayList<FollowUser>(GUEST_UIDS)!!
+            selectedGuestsAdapter?.submitList(specifiedGuestUids)
         }
         setupRecyclerView()
         subscribeObservers()
@@ -159,9 +174,9 @@ TimePickerDialog.OnTimeSetListener {
                 CreateMovieNightStateEvent.SaveMovieNight(
                     MovieNight(
                         sharedPreferences.getString(Constants.CURRENT_USER_UID, "")!!,
-                        specifiedGuestUids,
+                        specifiedGuestUids.map { it.uid },
                         specifiedMovie!!.imdbID,
-                        "${specifiedDate!!.year}-${specifiedDate!!.month}-${specifiedDate!!.dayOfMonth}",
+                        specifiedDate!!,
                         specifiedTime!!
                     )
                 )
@@ -215,6 +230,14 @@ TimePickerDialog.OnTimeSetListener {
             }
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putParcelableArrayList(GUEST_UIDS, specifiedGuestUids)
+        outState.putString(MOVIENIGHT_DATE, specifiedDate)
+        outState.putString(MOVIENIGHT_TIME, specifiedTime)
+        outState.putParcelable(MOVIE_DETAIL, specifiedMovie)
+        super.onSaveInstanceState(outState)
+    }
+
     private fun getRating(str: String): Float {
         try {
             val rating = str.toFloat()
@@ -226,7 +249,7 @@ TimePickerDialog.OnTimeSetListener {
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         val dateString = "$year-${month + 1}-$dayOfMonth"
-        specifiedDate = LocalDate.parse(dateString)
+        specifiedDate = dateString
         movieNightDatePicker.text = dateString
     }
 
