@@ -32,6 +32,9 @@ class LoginFragment : Fragment(), AuthActivity.OnMissingUserListener {
 
     private lateinit var viewModel: AuthViewModel
 
+    val animationDuration = 1000L
+    val offset = 300L
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -49,8 +52,26 @@ class LoginFragment : Fragment(), AuthActivity.OnMissingUserListener {
             (this as AuthActivity).onMissingUserListener = this@LoginFragment
         }
 
+        if (!viewModel.userExists) {
+            showInputFields()
+        }
+
+        doLogoAnimation()
         initListeners()
         attemptLoginWithExistingUser()
+    }
+
+    private fun doLogoAnimation() {
+        val logoAnimation = ObjectAnimator.ofFloat(
+            login_screen_logo, View.TRANSLATION_Y, -100f
+        ).apply { duration = animationDuration }
+
+        val appTitleAnimation = ObjectAnimator.ofFloat(
+            appTitle, View.TRANSLATION_Y, -100f
+        ).apply { duration = animationDuration }
+
+        logoAnimation.start()
+        appTitleAnimation.start()
     }
 
     private fun attemptLoginWithExistingUser() {
@@ -73,25 +94,21 @@ class LoginFragment : Fragment(), AuthActivity.OnMissingUserListener {
     }
 
     override fun onUserMissing() {
+        viewModel.userExists = false
         if ((activity as AuthActivity).firstTimeAnimationPlayed) return
 
-        val animationDuration = 1000L
-        val offset = 300L
-
-        val logoAnimation = ObjectAnimator.ofFloat(
-            login_screen_logo, View.TRANSLATION_Y, -100f
-        ).apply { duration = animationDuration }
-
-        val appTitleAnimation = ObjectAnimator.ofFloat(
-            appTitle, View.TRANSLATION_Y, -100f
-        ).apply { duration = animationDuration }
-
-        logoAnimation.start()
-        appTitleAnimation.start()
+        showInputFields()
 
         auth_email_input.fadeIn(animationDuration, offset)
         auth_password_input.fadeIn(animationDuration, offset)
         auth_btn_login.fadeIn(animationDuration, offset)
         auth_register_text_link.fadeIn(animationDuration, offset)
+    }
+
+    private fun showInputFields() {
+        auth_email_input.visibility = View.VISIBLE
+        auth_password_input.visibility = View.VISIBLE
+        auth_btn_login.visibility = View.VISIBLE
+        auth_register_text_link.visibility = View.VISIBLE
     }
 }

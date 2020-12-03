@@ -15,6 +15,8 @@ class AuthViewModel @ViewModelInject constructor(
     val repository: AuthRepository
 ) : ViewModel() {
 
+    var userExists = true
+
     private val _stateEvent: MutableLiveData<AuthStateEvent> = MutableLiveData()
 
     val dataState: LiveData<DataState<AuthViewState>> =

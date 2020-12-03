@@ -27,8 +27,10 @@ class AuthRepository @Inject constructor(
     suspend fun loginUserIfExisting(): DataState<AuthViewState> {
 
         val email = sharedPreferences.getString(Constants.PREVIOUS_AUTH_USER, null)
-        // User not in SharedPref, so return null (will not be reacted to)
-            ?: return DataState.data<AuthViewState>(null)
+            ?: return DataState.data<AuthViewState>(null, AuthViewState(
+                false,
+                null
+            ))
 
         val userProperties = authDao.searchByEmail(email)
         // This shouldn't ever happen, unless there's some database config error
@@ -56,6 +58,7 @@ class AuthRepository @Inject constructor(
 
             return DataState.data(
                 data = AuthViewState(
+                    true,
                     authResult.user?.uid
                 )
             )
@@ -102,7 +105,10 @@ class AuthRepository @Inject constructor(
                 createDbUser(name, user, email)
                 return@register DataState.data(
                     null,
-                    AuthViewState(user.uid)
+                    AuthViewState(
+                        true,
+                        user.uid
+                    )
                 )
             }
         } catch (e: FirebaseAuthWeakPasswordException) {

@@ -46,14 +46,13 @@ class AuthActivity : AppCompatActivity() {
                 ds.data?.let { event ->
                     val content = event.getContentIfNotHandled()
                     content?.let { viewState ->
-                        val uid = viewState.uid
-                        navToMainActivity(uid)
+                        if (viewState.userExists) {
+                            val uid = viewState.uid
+                            navToMainActivity(uid)
+                        } else {
+                            onMissingUserListener?.onUserMissing()
+                        }
                     }
-                }
-
-                if (ds.data == null) {
-                    onMissingUserListener?.onUserMissing()
-                    firstTimeAnimationPlayed = true
                 }
 
                 ds.message?.let { event ->
