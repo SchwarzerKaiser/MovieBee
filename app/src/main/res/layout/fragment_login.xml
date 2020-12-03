@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/login_fragment_root_view"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -11,18 +11,19 @@
         android:id="@+id/login_screen_logo"
         android:layout_width="170dp"
         android:layout_height="170dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="150dp"
+        android:src="@drawable/logo_movienights"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/logo_movienights" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/appTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/biryani_semibold"
-        android:text="Movie Nights"
+        android:text="MovieNights"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textColor="#9A0034"
         android:textSize="35sp"
@@ -37,14 +38,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="100dp"
         app:boxBackgroundColor="@color/colorPrimaryLight"
         app:boxStrokeColor="@color/colorTextWhite"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/appTitle">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/auth_email_field"

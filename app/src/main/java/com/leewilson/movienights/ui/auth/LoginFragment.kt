@@ -1,5 +1,6 @@
 package com.leewilson.movienights.ui.auth
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.os.Bundle
 import android.text.Html
@@ -20,11 +21,12 @@ import com.leewilson.movienights.BaseApplication
 import com.leewilson.movienights.BuildConfig
 import com.leewilson.movienights.R
 import com.leewilson.movienights.ui.auth.state.AuthStateEvent
+import com.leewilson.movienights.util.fadeIn
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_login.*
 import javax.inject.Inject
 
-class LoginFragment : Fragment() {
+class LoginFragment : Fragment(), AuthActivity.OnMissingUserListener {
 
     private val TAG = "LoginFragment"
 
@@ -44,6 +46,7 @@ class LoginFragment : Fragment() {
 
         activity?.run {
             viewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
+            (this as AuthActivity).onMissingUserListener = this@LoginFragment
         }
 
         initListeners()
@@ -67,5 +70,28 @@ class LoginFragment : Fragment() {
                 )
             )
         }
+    }
+
+    override fun onUserMissing() {
+        if ((activity as AuthActivity).firstTimeAnimationPlayed) return
+
+        val animationDuration = 1000L
+        val offset = 300L
+
+        val logoAnimation = ObjectAnimator.ofFloat(
+            login_screen_logo, View.TRANSLATION_Y, -100f
+        ).apply { duration = animationDuration }
+
+        val appTitleAnimation = ObjectAnimator.ofFloat(
+            appTitle, View.TRANSLATION_Y, -100f
+        ).apply { duration = animationDuration }
+
+        logoAnimation.start()
+        appTitleAnimation.start()
+
+        auth_email_input.fadeIn(animationDuration, offset)
+        auth_password_input.fadeIn(animationDuration, offset)
+        auth_btn_login.fadeIn(animationDuration, offset)
+        auth_register_text_link.fadeIn(animationDuration, offset)
     }
 }

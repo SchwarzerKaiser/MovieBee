@@ -21,6 +21,10 @@ class AuthActivity : AppCompatActivity() {
 
     private val viewModel: AuthViewModel by viewModels()
 
+    var onMissingUserListener: OnMissingUserListener? = null
+
+    var firstTimeAnimationPlayed = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_auth)
@@ -45,6 +49,11 @@ class AuthActivity : AppCompatActivity() {
                         val uid = viewState.uid
                         navToMainActivity(uid)
                     }
+                }
+
+                if (ds.data == null) {
+                    onMissingUserListener?.onUserMissing()
+                    firstTimeAnimationPlayed = true
                 }
 
                 ds.message?.let { event ->
@@ -76,5 +85,9 @@ class AuthActivity : AppCompatActivity() {
             message,
             Snackbar.LENGTH_SHORT
         ).show()
+    }
+
+    interface OnMissingUserListener {
+        fun onUserMissing()
     }
 }
