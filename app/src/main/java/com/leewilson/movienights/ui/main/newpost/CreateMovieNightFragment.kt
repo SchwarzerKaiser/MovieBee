@@ -175,7 +175,7 @@ TimePickerDialog.OnTimeSetListener {
                     MovieNight(
                         sharedPreferences.getString(Constants.CURRENT_USER_UID, "")!!,
                         specifiedGuestUids.map { it.uid },
-                        specifiedMovie!!.imdbID,
+                        specifiedMovie!!.imdbID!!,
                         specifiedDate!!,
                         specifiedTime!!
                     )
@@ -207,7 +207,7 @@ TimePickerDialog.OnTimeSetListener {
 
     private fun setMovieData(details: MovieDetail) {
 
-        val rating = getRating(details.imdbRating)
+        val rating = getRating(details.imdbRating ?: "0")
         if (rating < 4.0) {
             tvImdbRating.setTextColor(Color.RED)
         } else if (rating > 7.9) {
@@ -219,9 +219,9 @@ TimePickerDialog.OnTimeSetListener {
         description.text = details.plot
 
         details.genre
-            .split(", ")
-            .map { it.trim() }
-            .forEach { genre ->
+            ?.split(", ")
+            ?.map { it.trim() }
+            ?.forEach { genre ->
                 genreChipGroup.addView(
                     Chip(activity).apply {
                         text = genre

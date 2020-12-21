@@ -19,7 +19,7 @@ data class MovieDetail(
 
     @SerializedName("BoxOffice")
     @Expose
-    val boxOffice: String,
+    val boxOffice: String? = null,
 
     @SerializedName("Country")
     @Expose
@@ -27,85 +27,85 @@ data class MovieDetail(
 
     @SerializedName("DVD")
     @Expose
-    val dVD: String,
+    val dvd: String? = null,
 
     @SerializedName("Director")
     @Expose
-    val director: String,
+    val director: String? = null,
 
     @SerializedName("Genre")
     @Expose
-    val genre: String,
+    val genre: String? = null,
 
     @SerializedName("imdbID")
     @Expose
-    val imdbID: String,
+    val imdbID: String? = null,
 
     @SerializedName("imdbRating")
     @Expose
-    val imdbRating: String,
+    val imdbRating: String?,
 
     @SerializedName("imdbVotes")
     @Expose
-    val imdbVotes: String,
+    val imdbVotes: String? = null,
 
     @SerializedName("Language")
     @Expose
-    val language: String,
+    val language: String? = null,
 
     @SerializedName("Metascore")
     @Expose
-    val metascore: String,
+    val metascore: String? = null,
 
     @SerializedName("Plot")
     @Expose
-    val plot: String,
+    val plot: String? = null,
 
     @SerializedName("Poster")
     @Expose
-    val poster: String,
+    val poster: String? = null,
 
     @SerializedName("Production")
     @Expose
-    val production: String,
+    val production: String? = null,
 
     @SerializedName("Rated")
     @Expose
-    val rated: String,
+    val rated: String? = null,
 
     @SerializedName("Ratings")
     @Expose
-    val ratings: List<Rating>,
+    val ratings: List<Rating>? = null,
 
     @SerializedName("Released")
     @Expose
-    val released: String,
+    val released: String? = null,
 
     @SerializedName("Response")
     @Expose
-    val response: String,
+    val response: String? = null,
 
     @SerializedName("Runtime")
     @Expose
-    val runtime: String,
+    val runtime: String? = null,
 
     @SerializedName("Title")
     @Expose
-    val title: String,
+    val title: String? = null,
 
     @SerializedName("Type")
     @Expose
-    val type: String,
+    val type: String? = null,
 
     @SerializedName("Website")
     @Expose
-    val website: String,
+    val website: String? = null,
 
     @SerializedName("Writer")
     @Expose
-    val writer: String,
+    val writer: String? = null,
 
     @SerializedName("Year")
     @Expose
-    val year: String
+    val year: String? = null
 ) : Parcelable
