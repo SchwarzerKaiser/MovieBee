@@ -11,11 +11,11 @@ data class MovieDetail(
 
     @SerializedName("Actors")
     @Expose
-    val actors: String,
+    val actors: String? = null,
 
     @SerializedName("Awards")
     @Expose
-    val awards: String,
+    val awards: String? = null,
 
     @SerializedName("BoxOffice")
     @Expose
@@ -23,7 +23,7 @@ data class MovieDetail(
 
     @SerializedName("Country")
     @Expose
-    val country: String,
+    val country: String? = null,
 
     @SerializedName("DVD")
     @Expose
@@ -39,11 +39,11 @@ data class MovieDetail(
 
     @SerializedName("imdbID")
     @Expose
-    val imdbID: String? = null,
+    val imdbID: String,
 
     @SerializedName("imdbRating")
     @Expose
-    val imdbRating: String?,
+    val imdbRating: String? = null,
 
     @SerializedName("imdbVotes")
     @Expose
