@@ -105,4 +105,7 @@ class MainModule {
     ): SharedPreferences.Editor {
         return sharedPreferences.edit()
     }
+
+    @Provides
+    fun provideContext(@ApplicationContext context: Context): Context = context
 }

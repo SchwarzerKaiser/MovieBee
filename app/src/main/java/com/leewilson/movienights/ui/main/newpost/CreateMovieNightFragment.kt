@@ -20,6 +20,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
+import com.google.firebase.Timestamp
 import com.leewilson.movienights.R
 import com.leewilson.movienights.model.FollowUser
 import com.leewilson.movienights.model.Movie
@@ -31,14 +32,12 @@ import com.leewilson.movienights.ui.main.newpost.state.CreateMovieNightViewState
 import com.leewilson.movienights.ui.selectguests.SelectGuestsActivity
 import com.leewilson.movienights.ui.selectguests.SelectedGuestsAdapter
 import com.leewilson.movienights.util.Constants
+import com.leewilson.movienights.util.asDate
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_createmovienight.*
 import java.lang.Exception
-import java.time.DayOfWeek
-import java.time.LocalDate
-import java.time.LocalTime
-import java.time.Month
+import java.time.*
 import java.time.format.DateTimeFormatter
 import java.util.*
 import javax.inject.Inject
@@ -52,10 +51,10 @@ DatePickerDialog.OnDateSetListener,
 TimePickerDialog.OnTimeSetListener {
 
     companion object {
-        const val GUEST_UIDS = "com.leewilson.movienights.ui.main.newpost.CreateMovieNightFragment.GUEST_UIDS"
-        const val MOVIENIGHT_DATE = "com.leewilson.movienights.ui.main.newpost.CreateMovieNightFragment.MOVIENIGHT_DATE"
-        const val MOVIENIGHT_TIME = "com.leewilson.movienights.ui.main.newpost.CreateMovieNightFragment.MOVIENIGHT_TIME"
-        const val MOVIE_DETAIL = "com.leewilson.movienights.ui.main.newpost.CreateMovieNightFragment.MOVIE_DETAIL"
+        const val GUEST_UIDS = "CreateMovieNightFragment.GUEST_UIDS"
+        const val MOVIENIGHT_DATE = "CreateMovieNightFragment.MOVIENIGHT_DATE"
+        const val MOVIENIGHT_TIME = "CreateMovieNightFragment.MOVIENIGHT_TIME"
+        const val MOVIE_DETAIL = "CreateMovieNightFragment.MOVIE_DETAIL"
     }
 
     @Inject
@@ -65,8 +64,8 @@ TimePickerDialog.OnTimeSetListener {
 
     private var selectedGuestsAdapter: SelectedGuestsAdapter? = SelectedGuestsAdapter()
 
-    private var specifiedDate: String? = null
-    private var specifiedTime: String? = null
+    private var specifiedDate: LocalDate? = null
+    private var specifiedTime: LocalTime? = null
     private var specifiedMovie: MovieDetail? = null
     private var specifiedGuestUids: ArrayList<FollowUser> = ArrayList()
 
@@ -103,15 +102,6 @@ TimePickerDialog.OnTimeSetListener {
                     )
                 )
             }
-        }
-        savedInstanceState?.let { savedState ->
-            specifiedMovie = savedState.getParcelable(MOVIE_DETAIL)
-            specifiedDate = savedState.getString(MOVIENIGHT_DATE)
-            movieNightDatePicker.text = specifiedDate
-            specifiedTime = savedState.getString(MOVIENIGHT_TIME)
-            movieNightTimePicker.text = specifiedTime
-            specifiedGuestUids = savedState.getParcelableArrayList<FollowUser>(GUEST_UIDS)!!
-            selectedGuestsAdapter?.submitList(specifiedGuestUids)
         }
         setupRecyclerView()
         subscribeObservers()
@@ -173,11 +163,16 @@ TimePickerDialog.OnTimeSetListener {
             viewModel.setStateEvent(
                 CreateMovieNightStateEvent.SaveMovieNight(
                     MovieNight(
-                        sharedPreferences.getString(Constants.CURRENT_USER_UID, "")!!,
-                        specifiedGuestUids.map { it.uid },
-                        specifiedMovie!!.imdbID!!,
-                        specifiedDate!!,
-                        specifiedTime!!
+                        hostUid = sharedPreferences.getString(Constants.CURRENT_USER_UID, "")!!,
+                        guestUids = specifiedGuestUids.map { it.uid },
+                        dateCreated = Timestamp.now(),
+                        dateOfEvent = Timestamp(
+                            LocalDateTime.of(
+                                specifiedDate!!, specifiedTime!!
+                            ).asDate()
+                        ),
+                        omdbId = specifiedMovie!!.imdbID,
+                        imageUrl = specifiedMovie!!.poster
                     )
                 )
             )
@@ -230,14 +225,6 @@ TimePickerDialog.OnTimeSetListener {
             }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putParcelableArrayList(GUEST_UIDS, specifiedGuestUids)
-        outState.putString(MOVIENIGHT_DATE, specifiedDate)
-        outState.putString(MOVIENIGHT_TIME, specifiedTime)
-        outState.putParcelable(MOVIE_DETAIL, specifiedMovie)
-        super.onSaveInstanceState(outState)
-    }
-
     private fun getRating(str: String): Float {
         try {
             val rating = str.toFloat()
@@ -248,15 +235,15 @@ TimePickerDialog.OnTimeSetListener {
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        specifiedDate = LocalDate.of(year, month + 1, dayOfMonth)
         val dateString = "$year-${month + 1}-$dayOfMonth"
-        specifiedDate = dateString
         movieNightDatePicker.text = dateString
     }
 
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
+        specifiedTime = LocalTime.of(hourOfDay, minute)
         val paddedHour = hourOfDay.toString().padStart(2, '0')
         val paddedMinute = minute.toString().padStart(2, '0')
-        specifiedTime = "$paddedHour:$paddedMinute"
         movieNightTimePicker.text = "$paddedHour:$paddedMinute"
     }
 

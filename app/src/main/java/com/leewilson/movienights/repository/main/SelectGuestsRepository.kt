@@ -36,7 +36,7 @@ class SelectGuestsRepository @Inject constructor(
                     FollowUser(
                         it["uid"] as String,
                         it["displayName"] as String,
-                        it["imageUri"] as String
+                        it["imageUri"] as String?
                     )
                 }
         } catch (e: IllegalStateException) {

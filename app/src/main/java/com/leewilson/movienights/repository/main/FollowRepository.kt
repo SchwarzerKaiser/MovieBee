@@ -24,7 +24,7 @@ class FollowRepository @Inject constructor(
                 FollowUser(
                     it["uid"] as String,
                     it["displayName"] as String,
-                    it["imageUri"] as String
+                    it["imageUri"] as String?
                 )
             }
             Log.d(TAG, "Got results: $results")

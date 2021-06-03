@@ -2,7 +2,9 @@ package com.leewilson.movienights.ui.follow
 
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.INVISIBLE
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
@@ -62,6 +64,8 @@ class UsersAdapter(
     ) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(item: FollowUser): Unit = with(itemView) {
+            val checkBox = itemView.findViewById<CheckBox>(R.id.checkBox)
+            checkBox.visibility = INVISIBLE
             itemView.setOnClickListener {
                 interaction?.onItemSelected(adapterPosition, item)
             }

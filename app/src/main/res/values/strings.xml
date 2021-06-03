@@ -10,4 +10,6 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="register_account_string"><![CDATA[Don\'t have an account? <b><u>Register</u></b>]]></string>
+    <string name="create_movie_night_error">Something went wrong. Check your connection.</string>
+    <string name="snackbar_movienight_saved">MovieNight saved!</string>
 </resources>
