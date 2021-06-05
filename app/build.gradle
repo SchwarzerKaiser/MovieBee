@@ -159,4 +159,7 @@ dependencies {
     // Paging 3
     def paging_version = "3.0.0-alpha11"
     implementation "androidx.paging:paging-runtime:$paging_version"
+
+    // Image compresssor
+    implementation 'id.zelory:compressor:3.0.1'
 }

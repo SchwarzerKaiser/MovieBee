@@ -69,7 +69,6 @@ class ProfileFragment : BaseMainFragment(R.layout.fragment_profile) {
                     if(it.imageUri.isNotBlank()) {
                         picasso.load(it.imageUri)
                             .placeholder(R.drawable.default_profile_img)
-                            .rotate(270f)
                             .into(profileImageView)
                     }
                 }

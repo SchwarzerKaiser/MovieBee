@@ -1,31 +1,37 @@
 package com.leewilson.movienights.ui.main.profile
 
-import android.app.Activity.RESULT_OK
-import android.content.Intent
-import android.graphics.Bitmap
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
-import android.provider.MediaStore
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts.*
+import androidx.core.content.FileProvider
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.leewilson.movienights.R
 import com.leewilson.movienights.ui.main.BaseMainFragment
 import com.leewilson.movienights.ui.main.profile.state.ProfileStateEvent
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_profile.*
+import id.zelory.compressor.Compressor
+import id.zelory.compressor.constraint.quality
+import id.zelory.compressor.constraint.size
 import kotlinx.android.synthetic.main.fragment_update_profile.*
 import kotlinx.android.synthetic.main.fragment_update_profile.profileImageView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
-import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
+
+private const val TAG = "UpdateProfile"
 
 @AndroidEntryPoint
 class UpdateProfileFragment : BaseMainFragment(R.layout.fragment_update_profile) {
@@ -38,6 +44,7 @@ class UpdateProfileFragment : BaseMainFragment(R.layout.fragment_update_profile)
     lateinit var picasso: Picasso
 
     private var changedProfileImageUri: Uri? = null
+    private var takenPhotoFileName: String? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -55,41 +62,43 @@ class UpdateProfileFragment : BaseMainFragment(R.layout.fragment_update_profile)
     }
 
     private fun dispatchTakePictureIntent() {
-        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-            takePictureIntent.resolveActivity(requireActivity().packageManager)?.also {
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+        val takePictureEvent = registerForActivityResult(TakePicture()) { savedToDisk ->
+            if (savedToDisk) {
+                val file = File(requireContext().filesDir, "${takenPhotoFileName}.jpg")
+                Log.d(TAG, "Getting picture file from filesDir: file name: ${takenPhotoFileName}")
+                if (file.exists()) {
+                    showProgressBar(true)
+                    /* It's going to be huge, so compress it */
+                    lifecycleScope.launch(Dispatchers.Default) {
+                        val compressedImageFile = Compressor.compress(requireContext(), file)
+                        withContext(Dispatchers.Main.immediate) {
+                            changedProfileImageUri = Uri.fromFile(compressedImageFile)
+                            picasso.load(changedProfileImageUri)
+                                .into(profileImageView)
+                            showProgressBar(false)
+                        }
+                    }
+                }
+            } else {
+                showSnackbar(requireContext().getString(R.string.generic_error_msg))
             }
         }
+        takePictureEvent.launch(createImageFile())
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            val imageBitmap = data?.extras?.get("data") as Bitmap
-
-            // Save to file and get URI
-            val file = createImageFile()
-            changedProfileImageUri = Uri.fromFile(file)
-            val stream = FileOutputStream(file)
-            imageBitmap
-                .compress(
-                Bitmap.CompressFormat.PNG,
-                100,
-                stream
-            )
-            picasso.load(changedProfileImageUri)
-                .rotate(270f)
-                .into(profileImageView)
-        }
-    }
-
-    private fun createImageFile(): File {
+    @SuppressLint("SimpleDateFormat")
+    private fun createImageFile(): Uri {
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val storageDir: File = activity?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
-        return File.createTempFile(
-            "JPEG_${timeStamp}_",
-            ".jpg",
-            storageDir
+        val fileName = "JPEG_${timeStamp}"
+        takenPhotoFileName = fileName
+        val storageDir = File("${requireContext().filesDir}/")
+        val file = File(storageDir, "${fileName}.jpg")
+        val uri = FileProvider.getUriForFile(
+            requireContext(),
+            "${requireContext().packageName}.fileprovider",
+            file
         )
+        return uri
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -108,6 +117,8 @@ class UpdateProfileFragment : BaseMainFragment(R.layout.fragment_update_profile)
                         imageUri = if (changedProfileImageUri == null) null else changedProfileImageUri.toString()
                     )
                 )
+                val file = File("${requireContext().filesDir}/$takenPhotoFileName.jpg")
+                if (file.exists() && !file.isDirectory) file.delete()
                 return true
             }
         }
@@ -131,7 +142,6 @@ class UpdateProfileFragment : BaseMainFragment(R.layout.fragment_update_profile)
                     if(viewState.imageUri.isNotBlank()) {
                         picasso.load(viewState.imageUri)
                             .placeholder(R.drawable.default_profile_img)
-                            .rotate(270f)
                             .into(profileImageView)
                     }
                 }

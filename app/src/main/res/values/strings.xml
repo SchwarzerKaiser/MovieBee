@@ -12,4 +12,5 @@
     <string name="register_account_string"><![CDATA[Don\'t have an account? <b><u>Register</u></b>]]></string>
     <string name="create_movie_night_error">Something went wrong. Check your connection.</string>
     <string name="snackbar_movienight_saved">MovieNight saved!</string>
+    <string name="generic_error_msg">Something went wrong</string>
 </resources>

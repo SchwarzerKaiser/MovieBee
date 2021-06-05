@@ -1,6 +1,7 @@
 package com.leewilson.movienights.ui.main.feed
 
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.leewilson.movienights.R
 import com.leewilson.movienights.databinding.ItemMovienightBinding
 import com.leewilson.movienights.model.MovieNight
+import com.squareup.picasso.Picasso
 
 class FeedAdapter(
     differCallback: DiffUtil.ItemCallback<MovieNight>
@@ -24,6 +26,13 @@ class FeedAdapter(
 
         fun bind(movieNight: MovieNight) {
             Log.d(TAG, "bind: $movieNight")
+            Picasso.get()
+                .load(movieNight.imageUrl)
+                .placeholder(R.drawable.movie_placeholder)
+                .resize(300, 300)
+                .centerCrop(Gravity.START)
+                .error(R.drawable.movie_placeholder)
+                .into(binding.poster)
         }
     }
 
