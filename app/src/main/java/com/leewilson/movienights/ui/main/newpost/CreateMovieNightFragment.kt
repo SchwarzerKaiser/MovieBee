@@ -50,13 +50,6 @@ class CreateMovieNightFragment : BaseMainFragment(R.layout.fragment_createmovien
 DatePickerDialog.OnDateSetListener,
 TimePickerDialog.OnTimeSetListener {
 
-    companion object {
-        const val GUEST_UIDS = "CreateMovieNightFragment.GUEST_UIDS"
-        const val MOVIENIGHT_DATE = "CreateMovieNightFragment.MOVIENIGHT_DATE"
-        const val MOVIENIGHT_TIME = "CreateMovieNightFragment.MOVIENIGHT_TIME"
-        const val MOVIE_DETAIL = "CreateMovieNightFragment.MOVIE_DETAIL"
-    }
-
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 
@@ -160,22 +153,25 @@ TimePickerDialog.OnTimeSetListener {
                 showSnackbar("Please specify a time.")
             }
 
-            viewModel.setStateEvent(
-                CreateMovieNightStateEvent.SaveMovieNight(
-                    MovieNight(
-                        hostUid = sharedPreferences.getString(Constants.CURRENT_USER_UID, "")!!,
-                        guestUids = specifiedGuestUids.map { it.uid },
-                        dateCreated = Timestamp.now(),
-                        dateOfEvent = Timestamp(
-                            LocalDateTime.of(
-                                specifiedDate!!, specifiedTime!!
-                            ).asDate()
-                        ),
-                        omdbId = specifiedMovie!!.imdbID,
-                        imageUrl = specifiedMovie!!.poster
+            specifiedMovie?.let { movieDetail ->
+                viewModel.setStateEvent(
+                    CreateMovieNightStateEvent.SaveMovieNight(
+                        MovieNight(
+                            movieName = movieDetail.title,
+                            hostUid = sharedPreferences.getString(Constants.CURRENT_USER_UID, "")!!,
+                            guestUids = specifiedGuestUids.map { it.uid },
+                            dateCreated = Timestamp.now(),
+                            dateOfEvent = Timestamp(
+                                LocalDateTime.of(
+                                    specifiedDate!!, specifiedTime!!
+                                ).asDate()
+                            ),
+                            omdbId = movieDetail.imdbID,
+                            imageUrl = movieDetail.poster
+                        )
                     )
                 )
-            )
+            }
         }
     }
 

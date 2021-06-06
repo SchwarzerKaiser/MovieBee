@@ -15,6 +15,7 @@ import com.leewilson.movienights.R
 import com.leewilson.movienights.databinding.FragmentFeedBinding
 import com.leewilson.movienights.model.MovieNight
 import com.leewilson.movienights.ui.main.BaseMainFragment
+import com.leewilson.movienights.util.TopSpacingItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_feed.*
 import kotlinx.coroutines.flow.collectLatest
@@ -67,6 +68,7 @@ class FeedFragment : BaseMainFragment(R.layout.fragment_feed) {
         }
 
         feedRecyclerView.adapter = adapter
+        feedRecyclerView.addItemDecoration(TopSpacingItemDecoration(16))
         feedRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         collectPagingData()

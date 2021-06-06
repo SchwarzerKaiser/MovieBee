@@ -3,6 +3,8 @@ package com.leewilson.movienights.model
 import com.google.firebase.Timestamp
 
 data class MovieNight(
+    var hostName: String? = null,
+    val movieName: String? = null,
     val hostUid: String? = null,
     val guestUids: List<String> = emptyList(),
     val dateCreated: Timestamp? = null,

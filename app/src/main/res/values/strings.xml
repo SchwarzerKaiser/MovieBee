@@ -13,4 +13,7 @@
     <string name="create_movie_night_error">Something went wrong. Check your connection.</string>
     <string name="snackbar_movienight_saved">MovieNight saved!</string>
     <string name="generic_error_msg">Something went wrong</string>
+    <string name="movie_night_hosting"><![CDATA[<b><u>%1$s</u></b> is hosting]]></string>
+    <string name="movie_night_num_guests_plural">%1$d guests</string>
+    <string name="movie_night_num_guests_singular">1 guest</string>
 </resources>

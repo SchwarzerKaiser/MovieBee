@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.leewilson.movienights.R
+import com.leewilson.movienights.databinding.FragmentProfileBinding
 import com.leewilson.movienights.ui.auth.AuthActivity
 import com.leewilson.movienights.ui.follow.*
 import com.leewilson.movienights.ui.main.BaseMainFragment
