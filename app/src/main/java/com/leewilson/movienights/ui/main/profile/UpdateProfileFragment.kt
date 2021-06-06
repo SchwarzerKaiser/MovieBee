@@ -19,8 +19,6 @@ import com.leewilson.movienights.ui.main.profile.state.ProfileStateEvent
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import id.zelory.compressor.Compressor
-import id.zelory.compressor.constraint.quality
-import id.zelory.compressor.constraint.size
 import kotlinx.android.synthetic.main.fragment_update_profile.*
 import kotlinx.android.synthetic.main.fragment_update_profile.profileImageView
 import kotlinx.coroutines.Dispatchers
@@ -35,8 +33,6 @@ private const val TAG = "UpdateProfile"
 
 @AndroidEntryPoint
 class UpdateProfileFragment : BaseMainFragment(R.layout.fragment_update_profile) {
-
-    private val REQUEST_IMAGE_CAPTURE = 1
 
     private val viewModel: ProfileViewModel by viewModels()
 
