@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toolbar
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -25,8 +24,14 @@ class SelectGuestsActivity : AppCompatActivity() {
 
     private val viewModel: SelectGuestsViewModel by viewModels()
 
-    private val listAdapter: SelectGuestsListAdapter by lazy {
-        SelectGuestsListAdapter(
+    private var listAdapter: SelectGuestsListAdapter? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_select_guests)
+
+        subscribeObservers()
+        listAdapter = SelectGuestsListAdapter(
             object : SelectGuestsListAdapter.Interaction {
                 override fun onSelected(user: FollowUser) {
                     viewModel.selectedUsers += user
@@ -37,14 +42,6 @@ class SelectGuestsActivity : AppCompatActivity() {
                 }
             }
         )
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_select_guests)
-
-
-        subscribeObservers()
         selectGuestsRecyclerView.apply {
             adapter = listAdapter
             layoutManager = LinearLayoutManager(this@SelectGuestsActivity)
@@ -83,7 +80,12 @@ class SelectGuestsActivity : AppCompatActivity() {
     private fun subscribeObservers() {
         viewModel.users.observe(this, Observer {
             selectGuestsProgressBar.visibility = View.GONE
-            listAdapter.submitList(it)
+            listAdapter?.submitList(it)
         })
+    }
+
+    override fun onDestroy() {
+        listAdapter = null
+        super.onDestroy()
     }
 }

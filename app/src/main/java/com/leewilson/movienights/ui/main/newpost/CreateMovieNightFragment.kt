@@ -142,15 +142,15 @@ TimePickerDialog.OnTimeSetListener {
 
         saveMovieNightBtn.setOnClickListener {
             if (specifiedDate == null) {
-                showSnackbar("Please specify a date.")
+                showSnackbar(getString(R.string.no_date_specified_err))
                 return@setOnClickListener
             }
             if (specifiedMovie == null) {
-                showSnackbar("Error!")
+                showSnackbar(getString(R.string.generic_error_msg))
                 return@setOnClickListener
             }
             if (specifiedTime == null) {
-                showSnackbar("Please specify a time.")
+                showSnackbar(getString(R.string.no_time_specified_err))
             }
 
             specifiedMovie?.let { movieDetail ->
@@ -205,7 +205,7 @@ TimePickerDialog.OnTimeSetListener {
             tvImdbRating.setTextColor(resources.getColor(R.color.colorHighlyRatedMovie))
         }
         tvImdbRating.text = rating.toString()
-        parentalRating.text = "Rated: ${details.rated}"
+        parentalRating.text = getString(R.string.create_movienight_page_rating, details.rated)
         releaseYear.text = details.year
         description.text = details.plot
 

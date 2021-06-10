@@ -16,4 +16,7 @@
     <string name="movie_night_hosting"><![CDATA[<b><u>%1$s</u></b> is hosting]]></string>
     <string name="movie_night_num_guests_plural">%1$d guests</string>
     <string name="movie_night_num_guests_singular">1 guest</string>
+    <string name="no_time_specified_err">Please specify a time.</string>
+    <string name="no_date_specified_err">Please specify a date.</string>
+    <string name="create_movienight_page_rating">Rated: %1$s</string>
 </resources>
