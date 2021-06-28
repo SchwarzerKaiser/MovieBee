@@ -8,6 +8,6 @@
 
     <fragment
         android:id="@+id/calendarFragment"
-        android:name="com.leewilson.movienights.ui.main.calendar.CalendarFragment"
+        android:name="com.leewilson.moviebee.ui.main.calendar.CalendarFragment"
         android:label="CalendarFragment" />
 </navigation>

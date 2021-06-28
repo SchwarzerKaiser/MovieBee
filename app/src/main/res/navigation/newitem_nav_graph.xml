@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/searchMovieFragment"
-        android:name="com.leewilson.movienights.ui.main.newpost.SearchMovieFragment"
+        android:name="com.leewilson.moviebee.ui.main.newpost.SearchMovieFragment"
         android:label="Find a movie">
         <action
             android:id="@+id/action_searchMovieFragment_to_createMovieNightFragment"
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/createMovieNightFragment"
-        android:name="com.leewilson.movienights.ui.main.newpost.CreateMovieNightFragment"
+        android:name="com.leewilson.moviebee.ui.main.newpost.CreateMovieNightFragment"
         android:label="Create your movie night">
         <action
             android:id="@+id/action_createMovieNightFragment_to_searchMovieFragment"

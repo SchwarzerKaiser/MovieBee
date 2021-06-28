@@ -10,7 +10,7 @@
     <fragment
         android:id="@+id/profileFragment"
         android:label="Profile"
-        android:name="com.leewilson.movienights.ui.main.profile.ProfileFragment" >
+        android:name="com.leewilson.moviebee.ui.main.profile.ProfileFragment" >
         <action
             android:id="@+id/action_profileFragment_to_updateProfileFragment"
             app:destination="@id/updateProfileFragment" />
@@ -18,7 +18,7 @@
 
     <fragment
         android:id="@+id/updateProfileFragment"
-        android:name="com.leewilson.movienights.ui.main.profile.UpdateProfileFragment"
+        android:name="com.leewilson.moviebee.ui.main.profile.UpdateProfileFragment"
         android:label="Update profile" >
         <action
             android:id="@+id/action_updateProfileFragment_to_profileFragment"
