@@ -24,7 +24,7 @@
             app:destination="@id/searchMovieFragment" />
         <argument
             android:name="movie"
-            app:argType="com.leewilson.movienights.model.Movie" />
+            app:argType="com.leewilson.moviebee.model.Movie" />
     </fragment>
 
 </navigation>

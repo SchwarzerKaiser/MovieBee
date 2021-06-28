@@ -18,6 +18,7 @@
             android:id="@+id/moviePoster"
             android:layout_width="match_parent"
             android:layout_height="250dp"
+
             android:scaleType="centerCrop"
             android:src="@drawable/movie_placeholder"
             app:layout_constraintEnd_toEndOf="parent"
@@ -181,11 +182,13 @@
             android:layout_height="150dp"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+            app:borderWidth="0dp"
             android:id="@+id/selectGuestsFab"
-            android:backgroundTint="@color/colorPrimary"
             android:src="@drawable/ic_add"
+            android:backgroundTint="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="@+id/guestsGallery"
             app:layout_constraintEnd_toEndOf="@id/guestsGallery"
+            app:tint="@color/colorTextWhite"
             android:layout_width="wrap_content"
             android:layout_marginEnd="@dimen/movie_detail_margin"
             android:layout_marginBottom="@dimen/movie_detail_margin"

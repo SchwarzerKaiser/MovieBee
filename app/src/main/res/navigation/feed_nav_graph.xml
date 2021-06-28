@@ -9,7 +9,7 @@
     <fragment
         android:id="@+id/feedFragment"
         android:name="com.leewilson.moviebee.ui.main.feed.FeedFragment"
-        android:label="MovieNights feed" >
+        android:label="MovieBee feed" >
         <action
             android:id="@+id/action_feedFragment_to_feedItemDetailFragment"
             app:destination="@id/feedItemDetailFragment" />
@@ -17,7 +17,7 @@
     <fragment
         android:id="@+id/feedItemDetailFragment"
         android:name="com.leewilson.moviebee.ui.main.feed.FeedItemDetailFragment"
-        android:label="MovieNight details" >
+        android:label="Movie night details" >
         <action
             android:id="@+id/action_feedItemDetailFragment_to_feedFragment"
             app:destination="@id/feedFragment" />
