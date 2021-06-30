@@ -62,6 +62,7 @@ class FeedAdapter(
             }
 
             binding.likeIcon.setOnClickListener {
+
                 movieNight.likeUids?.let { likes ->
                     if (!likes.contains(userId)) {
                         // like
@@ -72,6 +73,9 @@ class FeedAdapter(
                         interaction.onUnLike(movieNight)
                         movieNight.likeUids?.remove(userId)
                     }
+                } ?: run {
+                    movieNight.likeUids = mutableListOf(userId)
+                    interaction.onLike(movieNight)
                 }
 
                 movieNight.likeUids?.let { likes ->
