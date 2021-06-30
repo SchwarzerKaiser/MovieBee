@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.SetOptions
 import com.leewilson.moviebee.R
 import com.leewilson.moviebee.api.OMDBService
 import com.leewilson.moviebee.model.MovieNight
@@ -48,9 +49,23 @@ class CreateMovieNightRepository @Inject constructor(
                 .get().await().get("displayName") as String
             movieNight.hostName = hostName
 
+            var docId: String? = null
             firebaseRef.collection("movienights")
                 .add(movieNight)
+                .addOnCompleteListener { task ->
+                    task.result?.id?.let { docId = it }
+                }
                 .await()
+
+            docId?.let { id ->
+                firebaseRef.collection("movienights")
+                    .document(id)
+                    .set(
+                        mapOf("uid" to docId),
+                        SetOptions.merge()
+                    )
+            }
+
             return DataState.data(
                 context.getString(R.string.snackbar_movienight_saved),
                 null

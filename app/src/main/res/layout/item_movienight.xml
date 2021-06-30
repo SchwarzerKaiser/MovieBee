@@ -126,9 +126,12 @@
                     android:layout_height="wrap_content"/>
 
                 <TextView
+                    android:id="@+id/numLikes"
                     app:layout_constraintStart_toEndOf="@id/likeIcon"
-
+                    app:layout_constraintTop_toTopOf="@id/likeIcon"
+                    app:layout_constraintBottom_toBottomOf="@id/likeIcon"
                     android:layout_width="wrap_content"
+                    android:layout_marginStart="8dp"
                     android:layout_height="wrap_content"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>

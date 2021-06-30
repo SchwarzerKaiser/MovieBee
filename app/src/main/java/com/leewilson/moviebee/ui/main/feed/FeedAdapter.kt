@@ -15,7 +15,9 @@ import com.squareup.picasso.Picasso
 import java.util.*
 
 class FeedAdapter(
-    differCallback: DiffUtil.ItemCallback<MovieNight>
+    differCallback: DiffUtil.ItemCallback<MovieNight>,
+    private val interaction: Interaction,
+    private val userId: String
 ) : PagingDataAdapter<MovieNight, FeedAdapter.MovieNightViewHolder>(differCallback) {
 
     private val TAG = "FeedAdapter"
@@ -51,6 +53,48 @@ class FeedAdapter(
                 val date = Date(timeStamp.seconds * 1000)
                 binding.dateTv.text = date.toFormattedString()
             }
+
+            fun changeIcon(like: Boolean) {
+                binding.likeIcon.setImageResource(
+                    if (like) R.drawable.ic_liked
+                        else R.drawable.ic_baseline_thumb_up_24
+                )
+            }
+
+            binding.likeIcon.setOnClickListener {
+                movieNight.likeUids?.let { likes ->
+                    if (!likes.contains(userId)) {
+                        // like
+                        interaction.onLike(movieNight)
+                        movieNight.likeUids?.add(userId)
+                    } else {
+                        // unlike
+                        interaction.onUnLike(movieNight)
+                        movieNight.likeUids?.remove(userId)
+                    }
+                }
+
+                movieNight.likeUids?.let { likes ->
+                    if (likes.contains(userId)) {
+                        // like
+                        changeIcon(true)
+                    } else {
+                        // unlike
+                        changeIcon(false)
+                    }
+                    binding.numLikes.text = if (likes.size > 0)
+                        likes.size.toString() else ""
+                }
+            }
+
+            movieNight.likeUids?.let { likerIds ->
+                if (likerIds.isNotEmpty()) {
+                    binding.numLikes.text = likerIds.size.toString()
+                }
+                if (likerIds.contains(userId)) {
+                    changeIcon(true)
+                } else changeIcon(false)
+            }
         }
     }
 
@@ -68,5 +112,10 @@ class FeedAdapter(
             LayoutInflater.from(parent.context), parent, false
         )
         return MovieNightViewHolder(binding)
+    }
+
+    interface Interaction {
+        fun onLike(movieNight: MovieNight)
+        fun onUnLike(movieNight: MovieNight)
     }
 }

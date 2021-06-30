@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MovieNights</string>
+    <string name="app_name">MovieBee</string>
     <string name="title_activity_auth">AuthActivity</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -7,7 +7,7 @@
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">"Welcome !"</string>
     <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="invalid_password">Password must be > 5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="register_account_string"><![CDATA[Don\'t have an account? <b><u>Register</u></b>]]></string>
     <string name="create_movie_night_error">Something went wrong. Check your connection.</string>

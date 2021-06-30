@@ -40,6 +40,7 @@ class FeedNetworkPagingSource @Inject constructor(
                 .whereIn("hostUid", users)
                 .orderBy("dateCreated", Query.Direction.DESCENDING)
 
+            var id: String
             val currentPage = params.key ?:
                 orderedCollection
                     .limit(ITEM_LOAD_LIMIT)
