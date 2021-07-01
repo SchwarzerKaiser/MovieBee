@@ -19,4 +19,6 @@
     <string name="no_time_specified_err">Please specify a time.</string>
     <string name="no_date_specified_err">Please specify a date.</string>
     <string name="create_movienight_page_rating">Rated: %1$s</string>
+    <string name="hint_email">E-mail</string>
+    <string name="hint_password">Password</string>
 </resources>

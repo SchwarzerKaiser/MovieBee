@@ -5,9 +5,10 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorHint">@color/colorTextBlack</item>
     </style>
 
-    <style name="MyAutofilledHighlight" parent="Theme.MaterialComponents.NoActionBar">
+    <style name="MyAutofilledHighlight" parent="AppTheme">
         <item name="android:autofilledHighlight">@drawable/empty_drawable_autofill_highlight</item>
     </style>
 
