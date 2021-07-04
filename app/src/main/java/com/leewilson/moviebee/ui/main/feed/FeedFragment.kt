@@ -3,11 +3,10 @@ package com.leewilson.moviebee.ui.main.feed
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.leewilson.moviebee.R
@@ -55,6 +54,7 @@ class FeedFragment : BaseMainFragment(R.layout.fragment_feed) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
 
         val uid = sharedPrefs.getString(Constants.CURRENT_USER_UID, "")!!
 
@@ -91,6 +91,21 @@ class FeedFragment : BaseMainFragment(R.layout.fragment_feed) {
         feedRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         collectPagingData()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_search_users, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menuitem_add_user -> {
+                findNavController().navigate(R.id.action_feedFragment_to_userSearchFragment)
+                return true
+            }
+        }
+        return false
     }
 
     private fun collectPagingData() {

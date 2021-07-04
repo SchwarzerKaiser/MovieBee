@@ -13,7 +13,11 @@
         <action
             android:id="@+id/action_feedFragment_to_feedItemDetailFragment"
             app:destination="@id/feedItemDetailFragment" />
+        <action
+            android:id="@+id/action_feedFragment_to_userSearchFragment"
+            app:destination="@id/userSearchFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/feedItemDetailFragment"
         android:name="com.leewilson.moviebee.ui.main.feed.FeedItemDetailFragment"
@@ -22,4 +26,8 @@
             android:id="@+id/action_feedItemDetailFragment_to_feedFragment"
             app:destination="@id/feedFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/userSearchFragment"
+        android:name="com.leewilson.moviebee.ui.main.feed.usersearch.UserSearchFragment"
+        android:label="UserSearchFragment" />
 </navigation>
