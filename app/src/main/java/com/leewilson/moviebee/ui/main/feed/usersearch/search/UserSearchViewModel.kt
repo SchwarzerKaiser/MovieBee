@@ -1,4 +1,4 @@
-package com.leewilson.moviebee.ui.main.feed.usersearch
+package com.leewilson.moviebee.ui.main.feed.usersearch.search
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*

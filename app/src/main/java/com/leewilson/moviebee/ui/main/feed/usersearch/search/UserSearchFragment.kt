@@ -1,4 +1,4 @@
-package com.leewilson.moviebee.ui.main.feed.usersearch
+package com.leewilson.moviebee.ui.main.feed.usersearch.search
 
 import android.os.Bundle
 import android.util.Log
@@ -8,13 +8,14 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.leewilson.moviebee.R
-import com.leewilson.moviebee.databinding.FragmentFeedBinding
 import com.leewilson.moviebee.databinding.FragmentUserSearchBinding
 import com.leewilson.moviebee.model.FollowUser
 import com.leewilson.moviebee.ui.main.BaseMainFragment
 import com.leewilson.moviebee.ui.main.feed.usersearch.state.UserSearchStateEvent
+import com.leewilson.moviebee.ui.main.feed.usersearch.userdetail.USER_ARG
 import dagger.hilt.android.AndroidEntryPoint
 
 private const val TAG = "UserSearch"
@@ -67,8 +68,12 @@ class UserSearchFragment : BaseMainFragment(R.layout.fragment_user_search) {
         binding.userSearchList.layoutManager = LinearLayoutManager(requireContext())
         _adapter = UserSearchAdapter(
             object : UserSearchAdapter.Interaction {
+
                 override fun onUserSelected(user: FollowUser, position: Int) {
-                    // Navigate to user detail
+                    val args = Bundle().apply {
+                        putString(USER_ARG, user.uid)
+                    }
+                    findNavController().navigate(R.id.action_userSearchFragment_to_userDetailFragment, args)
                 }
             }
         )

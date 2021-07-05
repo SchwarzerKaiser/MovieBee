@@ -25,10 +25,21 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Named
 
 @Module
 @InstallIn(ActivityRetainedComponent::class)
 class MainModule {
+
+    @Provides
+    @Named("myUid")
+    fun provideUserUid(
+        sharedPreferences: SharedPreferences
+    ): String? {
+        return sharedPreferences.getString(
+            Constants.CURRENT_USER_UID, null
+        )
+    }
 
     @Provides
     fun provideGsonInstance(): Gson {

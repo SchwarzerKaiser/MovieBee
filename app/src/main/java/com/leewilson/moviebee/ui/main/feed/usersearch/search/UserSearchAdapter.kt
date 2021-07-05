@@ -1,8 +1,6 @@
-package com.leewilson.moviebee.ui.main.feed.usersearch
+package com.leewilson.moviebee.ui.main.feed.usersearch.search
 
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
@@ -37,7 +35,7 @@ class UserSearchAdapter(
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-        holder.bind(differ.currentList[position])
+        holder.bind(differ.currentList[position], position)
     }
 
     override fun getItemCount(): Int = differ.currentList.size
@@ -47,13 +45,16 @@ class UserSearchAdapter(
         private val interaction: Interaction
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(user: FollowUser) = with(itemView) {
+        fun bind(user: FollowUser, position: Int) = with(itemView) {
             binding.userName.text = user.displayName
             user.imageUrl?.let { url ->
                 Picasso.get()
                     .load(url)
                     .placeholder(R.drawable.default_profile_img)
                     .into(binding.userImageView)
+            }
+            binding.root.setOnClickListener {
+                interaction.onUserSelected(user, position)
             }
         }
     }
