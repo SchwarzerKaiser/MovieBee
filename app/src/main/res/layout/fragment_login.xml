@@ -9,7 +9,9 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="-115dp"
+        tools:layout_editor_absoluteY="211dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -20,7 +22,7 @@
                 android:layout_width="170dp"
                 android:layout_height="170dp"
                 android:layout_marginTop="150dp"
-                android:src="@drawable/logo_movienights"
+                android:src="@drawable/ic_moviebee_logo_darkbg"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -31,9 +33,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/biryani_semibold"
-                android:text="MovieNights"
+                android:text="@string/app_name"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                android:textColor="#9A0034"
+                android:textColor="@color/colorAccent"
                 android:textSize="35sp"
                 android:typeface="normal"
                 app:layout_constraintEnd_toEndOf="@id/login_screen_logo"
@@ -41,7 +43,6 @@
                 app:layout_constraintTop_toBottomOf="@id/login_screen_logo" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:visibility="invisible"
                 android:id="@+id/auth_email_input"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
@@ -49,6 +50,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="20dp"
+                android:visibility="invisible"
                 app:boxBackgroundColor="@color/colorPrimaryLight"
                 app:boxStrokeColor="@color/colorTextWhite"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -67,12 +69,12 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:visibility="invisible"
                 android:id="@+id/auth_password_input"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="70dp"
+                android:visibility="invisible"
                 app:boxBackgroundColor="@color/colorPrimaryLight"
                 app:boxStrokeColor="@color/colorTextWhite"
                 app:layout_constraintEnd_toEndOf="@id/auth_email_input"
@@ -91,7 +93,6 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
-                android:visibility="invisible"
                 android:id="@+id/auth_btn_login"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
@@ -99,16 +100,17 @@
                 android:backgroundTint="@color/colorPrimaryDark"
                 android:text="Log in"
                 android:textColor="@color/colorTextWhite"
+                android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="@+id/auth_password_input"
                 app:layout_constraintStart_toStartOf="@+id/auth_password_input"
                 app:layout_constraintTop_toBottomOf="@+id/auth_password_input" />
 
             <TextView
                 android:id="@+id/auth_register_text_link"
-                android:visibility="invisible"
                 android:layout_width="0dp"
                 android:layout_height="26dp"
                 android:layout_marginTop="16dp"
+                android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="@+id/auth_btn_login"
                 app:layout_constraintStart_toStartOf="@+id/auth_btn_login"
                 app:layout_constraintTop_toBottomOf="@+id/auth_btn_login" />
