@@ -29,7 +29,7 @@
     <fragment
         android:id="@+id/userSearchFragment"
         android:name="com.leewilson.moviebee.ui.main.feed.usersearch.search.UserSearchFragment"
-        android:label="UserSearchFragment" >
+        android:label="Search users" >
         <action
             android:id="@+id/action_userSearchFragment_to_userDetailFragment"
             app:destination="@id/userDetailFragment" />
@@ -37,7 +37,7 @@
     <fragment
         android:id="@+id/userDetailFragment"
         android:name="com.leewilson.moviebee.ui.main.feed.usersearch.userdetail.UserDetailFragment"
-        android:label="UserDetailFragment" >
+        android:label="User" >
         <argument
             android:name="selectedUid"
             app:argType="string" />

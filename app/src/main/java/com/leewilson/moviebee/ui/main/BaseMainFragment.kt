@@ -35,7 +35,6 @@ abstract class BaseMainFragment(@LayoutRes resId: Int) : Fragment(resId) {
             findNavController(),
             AppBarConfiguration(setOf(
                 R.id.profileFragment,
-                R.id.calendarFragment,
                 R.id.searchMovieFragment,
                 R.id.feedFragment
             ))

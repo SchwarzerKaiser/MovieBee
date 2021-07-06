@@ -22,7 +22,7 @@ class BottomNavController(
     context: Context,
     @IdRes val containerId: Int,
     @IdRes val appStartDestinationId: Int,
-    var graphChangeListener: OnNavigationGraphChanged? = null,
+    private var graphChangeListener: OnNavigationGraphChanged? = null,
     val navGraphProvider: NavGraphProvider
 ) {
 
@@ -82,7 +82,6 @@ class BottomNavController(
                     findNavController(activity, R.id.mainFragmentContainer),
                     AppBarConfiguration(setOf(
                     R.id.profileFragment,
-                    R.id.calendarFragment,
                     R.id.searchMovieFragment,
                     R.id.feedFragment
                 ))

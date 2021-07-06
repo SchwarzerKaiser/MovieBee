@@ -58,7 +58,6 @@ class MainActivity : AppCompatActivity(),
     override fun getNavGraphId(itemId: Int): Int = when (itemId) {
         R.id.bottom_nav_menu_feed -> R.navigation.feed_nav_graph
         R.id.bottom_nav_menu_new -> R.navigation.newitem_nav_graph
-        R.id.bottom_nav_menu_calendar -> R.navigation.calendar_nav_graph
         R.id.bottom_nav_menu_profile -> R.navigation.profile_nav_graph
         else -> R.navigation.feed_nav_graph
     }
